@@ -8,7 +8,10 @@ A web page around running!
 - [ ] Top Reddit posts of running related Subreddits
 - [ ] New Youtube videos of running related topics
 - [ ] Latest running news
-- [ ] Infos on upcoming races
+- [ ] Infos of upcomming races
 
 
-### build by Christian Peters with Svelte! 
+- - - -
+
+
+_Build by Christian Peters with Svelte! 
