@@ -1,6 +1,6 @@
 # Lauf-Page
 
-A web page around running!
+A web page for runners
 
 ## Features
 
