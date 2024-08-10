@@ -14,4 +14,4 @@ A web page around running!
 - - - -
 
 
-_Build by Christian Peters with Svelte! 
+_Build by Christian Peters with Svelte!_
