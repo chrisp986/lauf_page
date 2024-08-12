@@ -101,4 +101,17 @@
             Pace in Minutes/KM: {convertToKilometers(paceMinutes, paceSeconds)}
         </p>
     </div>
+{#if $redditData}
+  <ul>
+    {#each $redditData.data.children as post}
+      <li>
+        <a href="https://www.reddit.com{post.data.permalink}">{post.data.title}</a>
+        by {post.data.author} (Score: {post.data.score})
+      </li>
+    {/each}
+  </ul>
+{:else}
+  <p>Loading top Reddit posts...</p>
+{/if}
+
 </div>
