@@ -1,6 +1,5 @@
-
 import { writable, type Writable } from 'svelte/store';
-import type { RedditTopResponse, RedditTopParams } from './reddit-types';
+import type { RedditTopResponse, RedditTopParams } from './reddit_types';
 
 export async function fetchRedditTop(params: RedditTopParams): Promise<Writable<RedditTopResponse>> {
   const data: Writable<RedditTopResponse> = writable();
