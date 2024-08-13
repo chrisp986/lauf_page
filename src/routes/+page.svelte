@@ -27,15 +27,15 @@
 
 
   import { onMount } from 'svelte';
-  import { fetchRedditTop } from './api';
-  import type { RedditTopResponse, RedditPost } from './reddit-types';
+  import { fetchRedditTop } from './api/reddit_data';
+  import type { RedditTopResponse, RedditPost } from './api/reddit_types';
   import type { Writable } from 'svelte/store';
 
   let redditData: Writable<RedditTopResponse>;
 
   onMount(async () => {
     try {
-      redditData = await fetchRedditTop({ subreddit: 'programming', limit: 10, time: 'week' });
+      redditData = await fetchRedditTop({ subreddit: 'running', limit: 2, time: 'week' });
     } catch (error) {
       console.error('Failed to fetch Reddit data:', error);
     }

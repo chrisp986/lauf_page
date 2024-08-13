@@ -11,6 +11,7 @@ export async function fetchRedditTop(params: RedditTopParams): Promise<Writable<
   if (before) url += `&before=${before}`;
 
   try {
+    console.log("URL", url);
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error('Network response was not ok');
