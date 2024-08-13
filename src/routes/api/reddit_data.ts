@@ -12,7 +12,10 @@ export async function fetchRedditTop(params: RedditTopParams): Promise<Writable<
 
   try {
     console.log("URL", url);
-    const response = await fetch(url);
+    const response = await fetch(url, {method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },});
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
