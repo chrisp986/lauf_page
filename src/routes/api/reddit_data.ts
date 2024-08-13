@@ -17,7 +17,7 @@ export async function fetchRedditTop(params: RedditTopParams): Promise<Writable<
         Accept: 'application/json',
       },});
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error('Error! status: ${response.status}');
     }
     const jsonData: RedditTopResponse = await response.json();
     data.set(jsonData);
