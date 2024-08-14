@@ -1,10 +1,40 @@
 <script lang="ts">
-    let paceMinutes: number = 0;
-    let paceSeconds: number = 0;
+  import { onMount } from 'svelte';
+  import { fetchRedditTop } from './api/reddit_data';
+  import type { RedditTopResponse, RedditPost } from './api/reddit_types';
+  import type { Writable } from 'svelte/store';
+
+
+    let paceMinutes: number = $state(0);
+    let paceSeconds: number = $state(0);
+
+    let isFirstFunction = $state(true);
+
+    function firstFunction() {
+      console.log("First Function");
+    }
+
+    function secondFunction() {
+      console.log("Second Function");
+    }
+
+    function toggleFunction() {
+      isFirstFunction = !isFirstFunction;
+      if (isFirstFunction) {
+        firstFunction();
+      } else {
+        secondFunction();
+      }
+    }
+
+    $effect(() => {
+      console.log("Current function ${isFirstFunction ? 'First' : 'Second'}");
+
+    })
 
     function convertToKilometers(paceMinutes: number, paceSeconds: number) {
         const milesToKM: number = 1.609344;
-        const secondsToDecimal: number = paceSeconds / 60;
+        const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
         const timeInDecimal: number = paceMinutes + secondsToDecimal;
 
         console.log("timeDecimal", timeInDecimal / milesToKM);
@@ -15,61 +45,28 @@
         const decimalToSeconds: number = (minutesKM % 1) * 0.6;
         console.log("decSeconds", Math.floor(minutesKM) + decimalToSeconds);
 
-        // const m = paceMinutes / milesToKM;
-        // const fractionalMinutes = (m % 1) / milesToKM;
-        // const ms = Math.floor(m) + fractionalMinutes;
-        // const ps = paceSeconds / milesToKM / 100;
-        // console.log("ps", ms);
-        // const total = ms + ps;
-
         return (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
     }
 
 
-  import { onMount } from 'svelte';
-  import { fetchRedditTop } from './api/reddit_data';
-  import type { RedditTopResponse, RedditPost } from './api/reddit_types';
-  import type { Writable } from 'svelte/store';
-
-  let redditData: Writable<RedditTopResponse>;
-
-  onMount(async () => {
-    try {
-      redditData = await fetchRedditTop({ subreddit: 'running', limit: 2, time: 'week' });
-    } catch (error) {
-      console.error('Failed to fetch Reddit data:', error);
+    function paceSecondsToDecimal (seconds: number) {
+      return seconds / 60;
     }
-  });
 
-    // function convertToKilometers(
-    //     paceMinutes: number,
-    //     paceSeconds: number,
-    // ): string {
-    //     const milesToKilometers = 1.609344;
 
-    //     const minutesInKilometers = paceMinutes / milesToKilometers;
-    //     const fractionalMinutes = minutesInKilometers % 1;
-    //     const secondsInKilometers = fractionalMinutes / 1.609344;
+    // let redditData: Writable<RedditTopResponse>;
 
-    //     const totalMinutes =
-    //         Math.floor(minutesInKilometers) + secondsInKilometers;
-    //     const secondsConverted = paceSeconds / 100 / milesToKilometers;
+    // onMount(async () => {
+    //   try {
+    //     redditData = await fetchRedditTop({ subreddit: 'running', limit: 2, time: 'week' });
+    //   } catch (error) {
+    //     console.error('Failed to fetch Reddit data:', error);
+    //   }
+    // });
 
-    //     const totalTimeInKilometers = totalMinutes + secondsConverted;
 
-    //     return totalTimeInKilometers.toFixed(2);
-    // }
 
-    // function leadingZero(number: number) {
-    //     if (number < 10) {
-    //         let m = "0" + number;
-    //     }
-    //     return m;
-    // }
 
-    // function convertToMiles(minutes) {
-    //     return (minutes * 1.60934).toFixed(2);
-    // }
 </script>
 
 <div class="container">
@@ -93,7 +90,9 @@
         </select>
     </div>
     <div class="form-item">
-        <button>M - KM</button>
+        <button onclick={toggleFunction}>
+          {isFirstFunction ? "Second" : "First"}
+        </button>
     </div>
     <div class="item row-3">
         <p>Pace in Minutes/Mile: {paceMinutes}:{paceSeconds}</p>
@@ -101,7 +100,7 @@
             Pace in Minutes/KM: {convertToKilometers(paceMinutes, paceSeconds)}
         </p>
     </div>
-{#if $redditData}
+<!-- {#if $redditData}
   <ul>
     {#each $redditData.data.children as post}
       <li>
@@ -112,6 +111,6 @@
   </ul>
 {:else}
   <p>Loading top Reddit posts...</p>
-{/if}
+{/if} -->
 
 </div>
