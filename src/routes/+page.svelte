@@ -5,8 +5,8 @@
   import type { Writable } from 'svelte/store';
 
 
-    let paceMinutes: number = $state(0);
-    let paceSeconds: number = $state(0);
+    let paceMinutes: number = $state(5);
+    let paceSeconds: number = $state(30);
 
     let isFirstFunction = $state(true);
 
@@ -28,7 +28,7 @@
     }
 
     $effect(() => {
-      console.log("Current function ${isFirstFunction ? 'First' : 'Second'}");
+      console.log("Current function ${isFirstFunction ? '1' : '2'}");
 
     })
 
@@ -91,13 +91,13 @@
     </div>
     <div class="form-item">
         <button onclick={toggleFunction}>
-          {isFirstFunction ? "Second" : "First"}
+          {isFirstFunction ? "First" : "Second"}
         </button>
     </div>
     <div class="item row-3">
-        <p>Pace in Minutes/Mile: {paceMinutes}:{paceSeconds}</p>
+        <p>Pace: {paceMinutes}:{paceSeconds} /Mile</p>
         <p>
-            Pace in Minutes/KM: {convertToKilometers(paceMinutes, paceSeconds)}
+            Pace: {convertToKilometers(paceMinutes, paceSeconds)} /KM
         </p>
     </div>
 <!-- {#if $redditData}
