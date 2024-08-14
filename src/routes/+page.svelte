@@ -5,8 +5,8 @@
   import type { Writable } from 'svelte/store';
 
 
-    let paceMinutes: number = $state(5);
-    let paceSeconds: number = $state(30);
+    let paceMinutes: number = $state(4);
+    let paceSeconds: number = $state(36);
 
     let isFirstFunction = $state(true);
 
