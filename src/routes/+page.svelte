@@ -48,6 +48,22 @@
         return (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
     }
 
+    function convertToMiles(paceMinutes: number, paceSeconds: number) {
+        const conversionRate: number = 1.609344;
+        const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
+        const timeInDecimal: number = paceMinutes + secondsToDecimal;
+
+        console.log("timeDecimal", timeInDecimal / );
+
+        const minutesKM = timeInDecimal * conversionRate;
+        console.log("remainder", minutesKM % 1);
+
+        const decimalToSeconds: number = (minutesKM % 1) * 0.6;
+        console.log("decSeconds", Math.floor(minutesKM) + decimalToSeconds);
+
+        return (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
+    }
+
 
     function paceSecondsToDecimal (seconds: number) {
       return seconds / 60;
