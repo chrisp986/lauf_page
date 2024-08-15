@@ -9,7 +9,9 @@
         {pk:2, name:"second"},
         {pk:3, name:"third"},
     ]
-
+    
+    let chosen = 1;
+    $: current = 
 
 
     let paceMinutes: number = $state(4);
