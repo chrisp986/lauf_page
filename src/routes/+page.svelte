@@ -4,6 +4,13 @@
   import type { RedditTopResponse, RedditPost } from './api/reddit_types';
   import type { Writable } from 'svelte/store';
 
+    let opts = [
+        {pk:1, name:"Kelvin Kiptum", pace_M: 4, pace_S: 36, distance: "Marathon", race:"Berlin", date:"01.01.2023"},
+        {pk:2, name:"second"},
+        {pk:3, name:"third"},
+    ]
+
+
 
     let paceMinutes: number = $state(4);
     let paceSeconds: number = $state(36);
