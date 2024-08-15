@@ -11,7 +11,7 @@
     ]
     
     let chosen = 1;
-    $: current = 
+    $: current = opts.find(opt => opt.pk === chosen);
 
 
     let paceMinutes: number = $state(4);
