@@ -1,10 +1,12 @@
 <script lang="ts">
-    interface convertProps {
+    interface convertPropsText {
         paceMinutes: number;
         paceSeconds: number;
         toggleMilesAndKM: boolean;
     }
-    let { paceMinutes, paceSeconds, toggleMilesAndKM }: convertProps = $props();
+
+    let { paceMinutes, paceSeconds, toggleMilesAndKM }: convertPropsText =
+        $props();
 
     function convertPace(
         paceMinutes: number,
@@ -13,20 +15,20 @@
     ) {
         // Helper variables
         const conversionRate: number = 1.609344;
-        let minutesKM: number = 0;
+        let minutesDist: number = 0;
 
         const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
         const timeInDecimal: number = paceMinutes + secondsToDecimal;
 
         if (toggleMilesAndKM) {
-            minutesKM = timeInDecimal * conversionRate;
+            minutesDist = timeInDecimal * conversionRate;
         } else {
-            minutesKM = timeInDecimal / conversionRate;
+            minutesDist = timeInDecimal / conversionRate;
         }
 
-        const decimalToSeconds: number = (minutesKM % 1) * 0.6;
+        const decimalToSeconds: number = (minutesDist % 1) * 0.6;
 
-        const total = (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
+        const total = (Math.floor(minutesDist) + decimalToSeconds).toFixed(2);
 
         return total.replace(".", ":");
     }

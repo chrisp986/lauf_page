@@ -3,21 +3,8 @@
   import { fetchRedditTop } from "./api/reddit_data";
   import type { RedditTopResponse, RedditPost } from "./api/reddit_types";
   import type { Writable } from "svelte/store";
-  import PaceConvert from "$lib/components/paceConvertText.svelte";
-
-  let opts = [
-    {
-      pk: 1,
-      name: "Kelvin Kiptum",
-      pace_M: 4,
-      pace_S: 36,
-      distance: "Marathon",
-      race: "Berlin",
-      date: "01.01.2023",
-    },
-    { pk: 2, name: "second" },
-    { pk: 3, name: "third" },
-  ];
+  import PaceConvertText from "$lib/components/paceConvertText.svelte";
+  import PaceConvertSelect from "$lib/components/paceConvertSelect.svelte";
 
   let paceMinutes: number = $state(4);
   let paceSeconds: number = $state(36);
@@ -30,6 +17,59 @@
 
   function* range(start: number, end: number): Generator<number> {
     for (let i = start; i <= end; i++) yield i;
+  }
+
+  function paceToRaceTime(
+    paceMinutes: number,
+    paceSeconds: number,
+    toggleMilesAndKM: boolean,
+    distance: number,
+  ) {
+    const distMarathon: number = 42.195;
+    const distHalfMarathon: number = 21.0975;
+    const dist10km: number = 10;
+    const dist5km: number = 5;
+
+    let dist = distance;
+
+    if (distance == 42) {
+      dist = distMarathon;
+    } else if (distance == 21) {
+      dist = distHalfMarathon;
+    } else if (distance == 10) {
+      dist = dist10km;
+    } else if (distance == 5) {
+      dist = dist5km;
+    }
+
+    let minutesDist: number = 0;
+
+    const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
+    const timeInDecimal: number = paceMinutes + secondsToDecimal;
+
+    if (toggleMilesAndKM) {
+      minutesDist = timeInDecimal * (distance / 1.609344);
+    } else {
+      minutesDist = timeInDecimal * distance;
+    }
+
+    const decimalToSeconds: number = (minutesDist % 1) * 0.6;
+
+    let raceTime = Math.floor(minutesDist) + decimalToSeconds;
+    let raceTimeInHours: number = raceTime;
+
+    if (raceTime > 60) {
+      console.log("rt", raceTime);
+      raceTimeInHours = raceTime / 60;
+    }
+
+    const total = raceTimeInHours.toFixed(2);
+
+    return total.replace(".", ":");
+  }
+
+  function paceSecondsToDecimal(seconds: number) {
+    return seconds / 60;
   }
 
   // let redditData: Writable<RedditTopResponse>;
@@ -49,6 +89,8 @@
 </p>
 
 <div class="flex mb-4">
+  <!--TODO -->
+  <!-- <PaceConvertSelect {paceMinutes} {paceSeconds} {toggleMilesAndKM} /> -->
   <div class="max-w-sm w-64">
     <select
       id="number-dd"
@@ -89,8 +131,25 @@
   </div>
 </div>
 
-<div class="flex">
-  <PaceConvert {paceMinutes} {paceSeconds} {toggleMilesAndKM} />
+<div class="flex mb-4">
+  <PaceConvertText {paceMinutes} {paceSeconds} {toggleMilesAndKM} />
+</div>
+
+<h3>Finishing Times</h3>
+<div class="grid grid-cols-1">
+  <p>
+    Marathon: {paceToRaceTime(paceMinutes, paceSeconds, toggleMilesAndKM, 42)}
+  </p>
+  <p>
+    Half-Marathon: {paceToRaceTime(
+      paceMinutes,
+      paceSeconds,
+      toggleMilesAndKM,
+      21,
+    )}
+  </p>
+  <p>10km: {paceToRaceTime(paceMinutes, paceSeconds, toggleMilesAndKM, 10)}</p>
+  <p>5km: {paceToRaceTime(paceMinutes, paceSeconds, toggleMilesAndKM, 5)}</p>
 </div>
 
 <!-- {#if $redditData}
