@@ -90,37 +90,45 @@
   // });
 </script>
 
-<div class="container">
-  <div class="item"></div>
-  <div class="points"></div>
-  <div class="item"></div>
-  <div class="item"></div>
-  <div class="form-item">
-    <select id="number-dd" name="number" bind:value={paceMinutes}>
-      {#each { length: 20 } as _, i}
-        <option>{i + 1}</option>
-      {/each}
-    </select>
-  </div>
-  <div class="points">:</div>
-  <div class="form-item">
-    <select id="number-dd" name="number" bind:value={paceSeconds}>
-      {#each { length: 59 } as _, i}
-        <option>{i + 1}</option>
-      {/each}
-    </select>
-  </div>
-  <div class="form-item">
-    <button onclick={toggleFunction}>
-      {isFirstFunction ? "First" : "Second"}
-    </button>
-  </div>
-  <div class="item row-3">
-    <p>Pace: {paceMinutes}:{paceSeconds} /Mile</p>
-    <p>
-      Pace: {convertToKilometers(paceMinutes, paceSeconds)} /KM
-    </p>
-  </div>
+<form class="max-w-sm">
+  <select
+    id="number-dd"
+    name="number"
+    bind:value={paceMinutes}
+    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+  >
+    {#each { length: 20 } as _, i}
+      <option>{i + 1}</option>
+    {/each}
+  </select>
+</form>
+
+<div class="text-center">:</div>
+
+<form class="max-w-sm">
+  <select
+    id="number-dd"
+    name="number"
+    bind:value={paceSeconds}
+    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+  >
+    {#each { length: 59 } as _, i}
+      <option>{i + 1}</option>
+    {/each}
+  </select>
+</form>
+
+<div class="">
+  <button onclick={toggleFunction}>
+    {isFirstFunction ? "First" : "Second"}
+  </button>
+</div>
+<div></div>
+<div class="col-span-4">
+  <p>Pace: {paceMinutes}:{paceSeconds} /Mile</p>
+  <p>
+    Pace: {convertToKilometers(paceMinutes, paceSeconds)} /KM
+  </p>
   <!-- {#if $redditData}
   <ul>
     {#each $redditData.data.children as post}
