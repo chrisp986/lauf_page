@@ -19,57 +19,46 @@
     for (let i = start; i <= end; i++) yield i;
   }
 
-  function paceToRaceTime(
+  type RaceDistance = "marathon" | "half-marathon" | "10k" | "5k";
+
+  function calculateFinishTime(
     paceMinutes: number,
     paceSeconds: number,
-    toggleMilesAndKM: boolean,
-    distance: number,
-  ) {
-    const distMarathon: number = 42.195;
-    const distHalfMarathon: number = 21.0975;
-    const dist10km: number = 10;
-    const dist5km: number = 5;
+    raceDistance: RaceDistance,
+    isMinutesPerMile: boolean = false,
+  ): string {
+    // Convert pace to total seconds
+    const paceInSeconds = paceMinutes * 60 + paceSeconds;
 
-    let dist = distance;
+    // Define distances in kilometers
+    const distances: { [key in RaceDistance]: number } = {
+      marathon: 42.195,
+      "half-marathon": 21.0975,
+      "10k": 10,
+      "5k": 5,
+    };
 
-    if (distance == 42) {
-      dist = distMarathon;
-    } else if (distance == 21) {
-      dist = distHalfMarathon;
-    } else if (distance == 10) {
-      dist = dist10km;
-    } else if (distance == 5) {
-      dist = dist5km;
-    }
+    // Get the distance in km for the selected race
+    const distanceKm = distances[raceDistance];
 
-    let minutesDist: number = 0;
-
-    const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
-    const timeInDecimal: number = paceMinutes + secondsToDecimal;
-
-    if (toggleMilesAndKM) {
-      minutesDist = timeInDecimal * (distance / 1.609344);
+    // Calculate total seconds for the given distance
+    let totalSeconds: number;
+    if (isMinutesPerMile) {
+      // If pace is in minutes per mile, convert to km pace
+      const kmPace = paceInSeconds / 1.60934;
+      totalSeconds = kmPace * distanceKm;
     } else {
-      minutesDist = timeInDecimal * distance;
+      // Pace is already in minutes per km
+      totalSeconds = paceInSeconds * distanceKm;
     }
 
-    const decimalToSeconds: number = (minutesDist % 1) * 0.6;
+    // Convert total seconds to hours, minutes, and seconds
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = Math.floor(totalSeconds % 60);
 
-    let raceTime = Math.floor(minutesDist) + decimalToSeconds;
-    let raceTimeInHours: number = raceTime;
-
-    if (raceTime > 60) {
-      console.log("rt", raceTime);
-      raceTimeInHours = raceTime / 60;
-    }
-
-    const total = raceTimeInHours.toFixed(2);
-
-    return total.replace(".", ":");
-  }
-
-  function paceSecondsToDecimal(seconds: number) {
-    return seconds / 60;
+    // Format the result as a string
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   }
 
   // let redditData: Writable<RedditTopResponse>;
@@ -138,18 +127,33 @@
 <h3>Finishing Times</h3>
 <div class="grid grid-cols-1">
   <p>
-    Marathon: {paceToRaceTime(paceMinutes, paceSeconds, toggleMilesAndKM, 42)}
-  </p>
-  <p>
-    Half-Marathon: {paceToRaceTime(
+    Marathon: {calculateFinishTime(
       paceMinutes,
       paceSeconds,
+      "marathon",
       toggleMilesAndKM,
-      21,
     )}
   </p>
-  <p>10km: {paceToRaceTime(paceMinutes, paceSeconds, toggleMilesAndKM, 10)}</p>
-  <p>5km: {paceToRaceTime(paceMinutes, paceSeconds, toggleMilesAndKM, 5)}</p>
+  <p>
+    Half-Marathon: {calculateFinishTime(
+      paceMinutes,
+      paceSeconds,
+      "half-marathon",
+      toggleMilesAndKM,
+    )}
+  </p>
+  <!-- <p>10km: {paceToRaceTime(paceMinutes, paceSeconds, toggleMilesAndKM, 10)}</p> -->
+  <p>
+    10km: {calculateFinishTime(
+      paceMinutes,
+      paceSeconds,
+      "10k",
+      toggleMilesAndKM,
+    )}
+  </p>
+  <p>
+    5km: {calculateFinishTime(paceMinutes, paceSeconds, "5k", toggleMilesAndKM)}
+  </p>
 </div>
 
 <!-- {#if $redditData}
