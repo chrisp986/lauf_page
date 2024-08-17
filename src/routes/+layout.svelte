@@ -13,7 +13,8 @@
         >
             Welcome to Lauf Page!
         </h1>
-        <div class="grid grid-cols-4 auto-cols-max">
+
+        <div class="">
             <slot></slot>
         </div>
     </main>
