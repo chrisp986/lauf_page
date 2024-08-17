@@ -3,13 +3,13 @@
 </script>
 
 <div class="h-screen p-2">
-    <nav>
-        <a href="/">home</a>
-        <a href="/about">about</a>
+    <nav class="flex">
+        <a class="m-1 text-blue-500 hover:text-blue-800" href="/">home</a>
+        <a class="m-1 text-blue-500 hover:text-blue-800" href="/about">about</a>
     </nav>
     <main>
         <h1
-            class="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-4xl"
+            class="mb-3 scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-4xl"
         >
             Welcome to Lauf Page!
         </h1>

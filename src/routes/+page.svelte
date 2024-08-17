@@ -18,29 +18,26 @@
     { pk: 3, name: "third" },
   ];
 
-  // let chosen = 1;
-  // $: current = opts.find((opt) => opt.pk === chosen);
-
   let paceMinutes: number = $state(4);
   let paceSeconds: number = $state(36);
 
   let isFirstFunction = $state(true);
 
-  function firstFunction() {
-    console.log("First Function");
-  }
+  // function firstFunction() {
+  //   console.log("First Function");
+  // }
 
-  function secondFunction() {
-    console.log("Second Function");
-  }
+  // function secondFunction() {
+  //   console.log("Second Function");
+  // }
 
   function toggleFunction() {
     isFirstFunction = !isFirstFunction;
-    if (isFirstFunction) {
-      firstFunction();
-    } else {
-      secondFunction();
-    }
+    // if (isFirstFunction) {
+    //   firstFunction();
+    // } else {
+    //   secondFunction();
+    // }
   }
 
   $effect(() => {
@@ -90,13 +87,13 @@
   // });
 </script>
 
-<div class="flex">
-  <div class="max-w-sm mt-4 w-64">
+<div class="flex mb-2">
+  <div class="max-w-sm w-64">
     <select
       id="number-dd"
       name="number"
       bind:value={paceMinutes}
-      class="h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="h-full bg-gray-50/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
       {#each { length: 20 } as _, i}
         <option>{i + 1}</option>
@@ -104,14 +101,16 @@
     </select>
   </div>
 
-  <div class="mt-4 w-6 font-extrabold flex items-center justify-center">:</div>
+  <div class="text-xl w-6 font-extrabold flex items-center justify-center">
+    :
+  </div>
 
-  <div class="max-w-sm mt-4 w-64">
+  <div class="max-w-sm w-64">
     <select
       id="number-dd"
       name="number"
       bind:value={paceSeconds}
-      class="h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="h-full bg-gray-50/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
       {#each { length: 59 } as _, i}
         <option>{i + 1}</option>
@@ -119,10 +118,10 @@
     </select>
   </div>
 
-  <div class="max-w-sm mt-4 w-64 ml-2">
+  <div class="max-w-sm w-64 ml-2">
     <button
       onclick={toggleFunction}
-      class="h-full w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="h-full w-full p-2.5 bg-gray-50/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
       {isFirstFunction ? "First" : "Second"}
     </button>
@@ -130,10 +129,17 @@
 </div>
 
 <div class="col-span-4">
-  <p>Pace: {paceMinutes}:{paceSeconds} /Mile</p>
-  <p>
-    Pace: {convertToKilometers(paceMinutes, paceSeconds)} /KM
-  </p>
+  {#if isFirstFunction}
+    <p>Pace: {paceMinutes}:{paceSeconds} /Mile</p>
+    <p>
+      Pace: {convertToKilometers(paceMinutes, paceSeconds)} /KM
+    </p>
+  {:else}
+    <p>Pace: {convertToMiles(paceMinutes, paceSeconds)} /Mile</p>
+    <p>
+      Pace: {paceMinutes}:{paceSeconds} /KM
+    </p>
+  {/if}
   <!-- {#if $redditData}
   <ul>
     {#each $redditData.data.children as post}
