@@ -3,6 +3,7 @@
   import { fetchRedditTop } from "./api/reddit_data";
   import type { RedditTopResponse, RedditPost } from "./api/reddit_types";
   import type { Writable } from "svelte/store";
+  import PaceConvert from "$lib/components/paceConvertText.svelte";
 
   let opts = [
     {
@@ -35,36 +36,40 @@
     toggleMilesAndKM = !toggleMilesAndKM;
   }
 
-  function convertToKilometers(paceMinutes: number, paceSeconds: number) {
-    const milesToKM: number = 1.609344;
-    const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
-    const timeInDecimal: number = paceMinutes + secondsToDecimal;
+  // function convertToKilometers(
+  //   paceMinutes: number,
+  //   paceSeconds: number,
+  //   toggleMilesAndKM: boolean,
+  // ) {
+  //   const milesToKM: number = 1.609344;
+  //   const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
+  //   const timeInDecimal: number = paceMinutes + secondsToDecimal;
 
-    const minutesKM = timeInDecimal / milesToKM;
+  //   const minutesKM = timeInDecimal / milesToKM;
 
-    const decimalToSeconds: number = (minutesKM % 1) * 0.6;
-    const total = (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
+  //   const decimalToSeconds: number = (minutesKM % 1) * 0.6;
+  //   const total = (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
 
-    return total.replace(".", ":");
-  }
+  //   return total.replace(".", ":");
+  // }
 
-  function convertToMiles(paceMinutes: number, paceSeconds: number) {
-    const conversionRate: number = 1.609344;
-    const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
-    const timeInDecimal: number = paceMinutes + secondsToDecimal;
+  // function convertToMiles(
+  //   paceMinutes: number,
+  //   paceSeconds: number,
+  //   toggleMilesAndKM: boolean,
+  // ) {
+  //   const conversionRate: number = 1.609344;
+  //   const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
+  //   const timeInDecimal: number = paceMinutes + secondsToDecimal;
 
-    const minutesKM = timeInDecimal * conversionRate;
+  //   const minutesKM = timeInDecimal * conversionRate;
 
-    const decimalToSeconds: number = (minutesKM % 1) * 0.6;
+  //   const decimalToSeconds: number = (minutesKM % 1) * 0.6;
 
-    const total = (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
+  //   const total = (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
 
-    return total.replace(".", ":");
-  }
-
-  function paceSecondsToDecimal(seconds: number) {
-    return seconds / 60;
-  }
+  //   return total.replace(".", ":");
+  // }
 
   // let redditData: Writable<RedditTopResponse>;
 
@@ -83,7 +88,7 @@
       id="number-dd"
       name="number"
       bind:value={paceMinutes}
-      class="h-full bg-gray-50/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="text-lg h-full bg-gray-50/50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
       {#each { length: 20 } as _, i}
         <option>{i + 1}</option>
@@ -100,7 +105,7 @@
       id="number-dd"
       name="number"
       bind:value={paceSeconds}
-      class="h-full bg-gray-50/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="text-lg h-full bg-gray-50/50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
       {#each { length: 59 } as _, i}
         <option>{i + 1}</option>
@@ -111,43 +116,17 @@
   <div class="max-w-sm w-64 ml-2">
     <button
       onclick={toggleFunction}
-      class="h-full w-full p-2.5 bg-gray-50/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="text-lg h-full w-full p-2.5 bg-gray-50/50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
-      {toggleMilesAndKM ? "Min/Miles" : "Min/KM"}
+      {toggleMilesAndKM ? "/Miles" : "/KM"}
     </button>
   </div>
 </div>
 
 <div class="flex">
-  <div class="flex-auto w-32 text-right">
-    {#if toggleMilesAndKM}
-      <p>{paceMinutes}:{paceSeconds} /Mile</p>
-    {:else}
-      <p class="font-bold">
-        {convertToMiles(paceMinutes, paceSeconds)} /Mile
-      </p>
-    {/if}
-  </div>
-
-  <div class="text-center w-4">
-    {#if toggleMilesAndKM}
-      <p>=</p>
-    {:else}
-      <p>=</p>
-    {/if}
-  </div>
-  <div class="flex-auto w-32 text-left">
-    {#if toggleMilesAndKM}
-      <p class="font-bold">
-        {convertToKilometers(paceMinutes, paceSeconds)} /KM
-      </p>
-    {:else}
-      <p>
-        {paceMinutes}:{paceSeconds} /KM
-      </p>
-    {/if}
-  </div>
+  <PaceConvert {paceMinutes} {paceSeconds} {toggleMilesAndKM} />
 </div>
+
 <!-- {#if $redditData}
 <ul>
   {#each $redditData.data.children as post}
