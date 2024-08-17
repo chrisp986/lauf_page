@@ -21,7 +21,7 @@
   let paceMinutes: number = $state(4);
   let paceSeconds: number = $state(36);
 
-  let isFirstFunction = $state(true);
+  let toggleMilesAndKM = $state(true);
 
   // function firstFunction() {
   //   console.log("First Function");
@@ -32,32 +32,20 @@
   // }
 
   function toggleFunction() {
-    isFirstFunction = !isFirstFunction;
-    // if (isFirstFunction) {
-    //   firstFunction();
-    // } else {
-    //   secondFunction();
-    // }
+    toggleMilesAndKM = !toggleMilesAndKM;
   }
-
-  $effect(() => {
-    console.log("Current function ${isFirstFunction ? '1' : '2'}");
-  });
 
   function convertToKilometers(paceMinutes: number, paceSeconds: number) {
     const milesToKM: number = 1.609344;
     const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
     const timeInDecimal: number = paceMinutes + secondsToDecimal;
 
-    console.log("timeDecimal", timeInDecimal / milesToKM);
-
     const minutesKM = timeInDecimal / milesToKM;
-    console.log("remainder", minutesKM % 1);
 
     const decimalToSeconds: number = (minutesKM % 1) * 0.6;
-    console.log("decSeconds", Math.floor(minutesKM) + decimalToSeconds);
+    const total = (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
 
-    return (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
+    return total.replace(".", ":");
   }
 
   function convertToMiles(paceMinutes: number, paceSeconds: number) {
@@ -69,7 +57,9 @@
 
     const decimalToSeconds: number = (minutesKM % 1) * 0.6;
 
-    return (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
+    const total = (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
+
+    return total.replace(".", ":");
   }
 
   function paceSecondsToDecimal(seconds: number) {
@@ -123,13 +113,13 @@
       onclick={toggleFunction}
       class="h-full w-full p-2.5 bg-gray-50/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
-      {isFirstFunction ? "First" : "Second"}
+      {toggleMilesAndKM ? "Miles" : "KM"}
     </button>
   </div>
 </div>
 
 <div class="col-span-4">
-  {#if isFirstFunction}
+  {#if toggleMilesAndKM}
     <p>Pace: {paceMinutes}:{paceSeconds} /Mile</p>
     <p>
       Pace: {convertToKilometers(paceMinutes, paceSeconds)} /KM
