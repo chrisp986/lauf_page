@@ -3,7 +3,7 @@
 </script>
 
 <div class="h-screen p-2">
-    <nav class="flex">
+    <nav class="flex md:flex md:flex-grow flex-row justify-end space-x-1">
         <a class="m-1 text-blue-500 hover:text-blue-800" href="/">home</a>
         <a class="m-1 text-blue-500 hover:text-blue-800" href="/about">about</a>
     </nav>
