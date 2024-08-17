@@ -77,7 +77,7 @@
   // });
 </script>
 
-<div class="flex mb-2">
+<div class="flex mb-4">
   <div class="max-w-sm w-64">
     <select
       id="number-dd"
@@ -113,26 +113,44 @@
       onclick={toggleFunction}
       class="h-full w-full p-2.5 bg-gray-50/50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
-      {toggleMilesAndKM ? "Miles" : "KM"}
+      {toggleMilesAndKM ? "Min/Miles" : "Min/KM"}
     </button>
   </div>
 </div>
 
-<div class="col-span-4">
-  {#if toggleMilesAndKM}
-    <p>Pace: {paceMinutes}:{paceSeconds} /Mile</p>
-    <p>
-      Pace: {convertToKilometers(paceMinutes, paceSeconds)} /KM
-    </p>
-  {:else}
-    <p>Pace: {convertToMiles(paceMinutes, paceSeconds)} /Mile</p>
-    <p>
-      Pace: {paceMinutes}:{paceSeconds} /KM
-    </p>
-  {/if}
-  <!-- {#if $redditData}
-  <ul>
-    {#each $redditData.data.children as post}
+<div class="flex">
+  <div class="flex-auto w-32 text-right">
+    {#if toggleMilesAndKM}
+      <p>{paceMinutes}:{paceSeconds} /Mile</p>
+    {:else}
+      <p class="font-bold">
+        {convertToMiles(paceMinutes, paceSeconds)} /Mile
+      </p>
+    {/if}
+  </div>
+
+  <div class="text-center w-4">
+    {#if toggleMilesAndKM}
+      <p>=</p>
+    {:else}
+      <p>=</p>
+    {/if}
+  </div>
+  <div class="flex-auto w-32 text-left">
+    {#if toggleMilesAndKM}
+      <p class="font-bold">
+        {convertToKilometers(paceMinutes, paceSeconds)} /KM
+      </p>
+    {:else}
+      <p>
+        {paceMinutes}:{paceSeconds} /KM
+      </p>
+    {/if}
+  </div>
+</div>
+<!-- {#if $redditData}
+<ul>
+  {#each $redditData.data.children as post}
       <li>
         <a href="https://www.reddit.com{post.data.permalink}">{post.data.title}</a>
         by {post.data.author} (Score: {post.data.score})
@@ -142,4 +160,3 @@
 {:else}
   <p>Loading top Reddit posts...</p>
 {/if} -->
-</div>
