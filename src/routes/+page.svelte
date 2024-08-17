@@ -24,52 +24,13 @@
 
   let toggleMilesAndKM = $state(true);
 
-  // function firstFunction() {
-  //   console.log("First Function");
-  // }
-
-  // function secondFunction() {
-  //   console.log("Second Function");
-  // }
-
   function toggleFunction() {
     toggleMilesAndKM = !toggleMilesAndKM;
   }
 
-  // function convertToKilometers(
-  //   paceMinutes: number,
-  //   paceSeconds: number,
-  //   toggleMilesAndKM: boolean,
-  // ) {
-  //   const milesToKM: number = 1.609344;
-  //   const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
-  //   const timeInDecimal: number = paceMinutes + secondsToDecimal;
-
-  //   const minutesKM = timeInDecimal / milesToKM;
-
-  //   const decimalToSeconds: number = (minutesKM % 1) * 0.6;
-  //   const total = (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
-
-  //   return total.replace(".", ":");
-  // }
-
-  // function convertToMiles(
-  //   paceMinutes: number,
-  //   paceSeconds: number,
-  //   toggleMilesAndKM: boolean,
-  // ) {
-  //   const conversionRate: number = 1.609344;
-  //   const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
-  //   const timeInDecimal: number = paceMinutes + secondsToDecimal;
-
-  //   const minutesKM = timeInDecimal * conversionRate;
-
-  //   const decimalToSeconds: number = (minutesKM % 1) * 0.6;
-
-  //   const total = (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
-
-  //   return total.replace(".", ":");
-  // }
+  function* range(start: number, end: number): Generator<number> {
+    for (let i = start; i <= end; i++) yield i;
+  }
 
   // let redditData: Writable<RedditTopResponse>;
 
@@ -82,6 +43,11 @@
   // });
 </script>
 
+<h2 class="text-lg mb-2">Pace Converter</h2>
+<p class="text-sm mb-2">
+  Convert the pace between minutes per Mile and minutes per KM.
+</p>
+
 <div class="flex mb-4">
   <div class="max-w-sm w-64">
     <select
@@ -90,8 +56,8 @@
       bind:value={paceMinutes}
       class="text-lg h-full bg-gray-50/50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
-      {#each { length: 20 } as _, i}
-        <option>{i + 1}</option>
+      {#each range(0, 20) as i}
+        <option>{i}</option>
       {/each}
     </select>
   </div>
@@ -107,8 +73,8 @@
       bind:value={paceSeconds}
       class="text-lg h-full bg-gray-50/50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
-      {#each { length: 59 } as _, i}
-        <option>{i + 1}</option>
+      {#each range(0, 59) as i}
+        <option>{i}</option>
       {/each}
     </select>
   </div>
