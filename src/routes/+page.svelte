@@ -5,14 +5,16 @@
   import type { Writable } from "svelte/store";
   import PaceConvertText from "$lib/components/paceConvertText.svelte";
   import PaceConvertSelect from "$lib/components/paceConvertSelect.svelte";
+  import RaceTime from "$lib/components/raceTime.svelte";
+  import type convertPropsRaceTime from "$lib/components/raceTime.svelte";
 
   let paceMinutes: number = $state(4);
   let paceSeconds: number = $state(36);
 
-  let toggleMilesAndKM = $state(true);
+  let isMinutesPerMile = $state(true);
 
   function toggleFunction() {
-    toggleMilesAndKM = !toggleMilesAndKM;
+    isMinutesPerMile = !isMinutesPerMile;
   }
 
   function* range(start: number, end: number): Generator<number> {
@@ -72,6 +74,7 @@
   // });
 </script>
 
+<!-- svelte-ignore state_referenced_locally -->
 <h2 class="text-lg mb-2">Pace Converter</h2>
 <p class="text-sm mb-2">
   Convert the pace between minutes per Mile and minutes per KM.
@@ -115,45 +118,18 @@
       onclick={toggleFunction}
       class="text-lg h-full w-full p-2.5 bg-gray-50/50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
-      {toggleMilesAndKM ? "/Miles" : "/KM"}
+      {isMinutesPerMile ? "/Miles" : "/KM"}
     </button>
   </div>
 </div>
 
 <div class="flex mb-4">
-  <PaceConvertText {paceMinutes} {paceSeconds} {toggleMilesAndKM} />
+  <PaceConvertText {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
-<h3>Finishing Times</h3>
-<div class="grid grid-cols-1">
-  <p>
-    Marathon: {calculateFinishTime(
-      paceMinutes,
-      paceSeconds,
-      "marathon",
-      toggleMilesAndKM,
-    )}
-  </p>
-  <p>
-    Half-Marathon: {calculateFinishTime(
-      paceMinutes,
-      paceSeconds,
-      "half-marathon",
-      toggleMilesAndKM,
-    )}
-  </p>
-  <!-- <p>10km: {paceToRaceTime(paceMinutes, paceSeconds, toggleMilesAndKM, 10)}</p> -->
-  <p>
-    10km: {calculateFinishTime(
-      paceMinutes,
-      paceSeconds,
-      "10k",
-      toggleMilesAndKM,
-    )}
-  </p>
-  <p>
-    5km: {calculateFinishTime(paceMinutes, paceSeconds, "5k", toggleMilesAndKM)}
-  </p>
+<h2 class="font-semibold mb-2">Finishing Times</h2>
+<div class="flex p-1">
+  <RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
 <!-- {#if $redditData}

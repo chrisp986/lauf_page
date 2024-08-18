@@ -2,48 +2,44 @@
     interface convertPropsText {
         paceMinutes: number;
         paceSeconds: number;
-        toggleMilesAndKM: boolean;
+        isMinutesPerMile: boolean;
     }
 
-    let { paceMinutes, paceSeconds, toggleMilesAndKM }: convertPropsText =
+    let { paceMinutes, paceSeconds, isMinutesPerMile }: convertPropsText =
         $props();
 
     function convertPace(
         paceMinutes: number,
         paceSeconds: number,
-        toggleMilesAndKM: boolean,
-    ) {
-        // Helper variables
-        const conversionRate: number = 1.609344;
-        let minutesDist: number = 0;
+        isMinutesPerMile: boolean = true,
+    ): string {
+        // Convert pace to total seconds
+        const totalSeconds = paceMinutes * 60 + paceSeconds;
 
-        const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
-        const timeInDecimal: number = paceMinutes + secondsToDecimal;
+        let convertedSeconds: number;
 
-        if (toggleMilesAndKM) {
-            minutesDist = timeInDecimal * conversionRate;
+        if (isMinutesPerMile) {
+            // Convert miles to km (1 mile = 1.60934km)
+            convertedSeconds = totalSeconds / 1.60934;
         } else {
-            minutesDist = timeInDecimal / conversionRate;
+            // Convert km to miles
+            convertedSeconds = totalSeconds * 1.60934;
         }
 
-        const decimalToSeconds: number = (minutesDist % 1) * 0.6;
+        // Convert back to minutes and seconds
+        const convertedMinutes = Math.floor(convertedSeconds / 60);
+        const remainingSeconds = Math.round(convertedSeconds % 60);
 
-        const total = (Math.floor(minutesDist) + decimalToSeconds).toFixed(2);
-
-        return total.replace(".", ":");
-    }
-
-    function paceSecondsToDecimal(seconds: number) {
-        return seconds / 60;
+        return `${convertedMinutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
     }
 </script>
 
 <div class="flex-auto w-32 text-right">
-    {#if toggleMilesAndKM}
+    {#if isMinutesPerMile}
         <p>{paceMinutes}:{paceSeconds}/Mile</p>
     {:else}
         <p class="font-bold">
-            {convertPace(paceMinutes, paceSeconds, toggleMilesAndKM)}/Mile
+            {convertPace(paceMinutes, paceSeconds, isMinutesPerMile)}/Mile
         </p>
     {/if}
 </div>
@@ -53,9 +49,9 @@
 </div>
 
 <div class="flex-auto w-32 text-left">
-    {#if toggleMilesAndKM}
+    {#if isMinutesPerMile}
         <p class="font-bold">
-            {convertPace(paceMinutes, paceSeconds, toggleMilesAndKM)}/KM
+            {convertPace(paceMinutes, paceSeconds, isMinutesPerMile)}/KM
         </p>
     {:else}
         <p>

@@ -1,7 +1,16 @@
 <script lang="ts">
+    interface convertPropsRaceTime {
+        paceMinutes: number;
+        paceSeconds: number;
+        isMinutesPerMile: boolean;
+    }
+
+    let { paceMinutes, paceSeconds, isMinutesPerMile }: convertPropsRaceTime =
+        $props();
+
     type RaceDistance = "marathon" | "half-marathon" | "10k" | "5k";
 
-    function calculateFinishTime(
+    function calculateRaceTime(
         paceMinutes: number,
         paceSeconds: number,
         raceDistance: RaceDistance,
@@ -41,3 +50,27 @@
         return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
     }
 </script>
+
+<p class="">
+    Marathon {calculateRaceTime(
+        paceMinutes,
+        paceSeconds,
+        "marathon",
+        isMinutesPerMile,
+    )}
+</p>
+<p class="">
+    Half-Marathon {calculateRaceTime(
+        paceMinutes,
+        paceSeconds,
+        "half-marathon",
+        isMinutesPerMile,
+    )}
+</p>
+<!-- <p>10km: {paceToRaceTime(paceMinutes, paceSeconds, toggleMilesAndKM, 10)}</p> -->
+<p class="">
+    10km {calculateRaceTime(paceMinutes, paceSeconds, "10k", isMinutesPerMile)}
+</p>
+<p class="">
+    5km {calculateRaceTime(paceMinutes, paceSeconds, "5k", isMinutesPerMile)}
+</p>
