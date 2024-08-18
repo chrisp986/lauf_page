@@ -84,10 +84,7 @@
   <PaceConvertText {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
-<h2 class="font-semibold mb-2">Finishing Times</h2>
-<div class="flex p-1">
-  <RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
-</div>
+<RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 
 <!-- {#if $redditData}
 <ul>

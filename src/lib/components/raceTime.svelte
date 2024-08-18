@@ -51,26 +51,33 @@
     }
 </script>
 
-<p class="">
-    Marathon {calculateRaceTime(
-        paceMinutes,
-        paceSeconds,
-        "marathon",
-        isMinutesPerMile,
-    )}
-</p>
-<p class="">
-    Half-Marathon {calculateRaceTime(
-        paceMinutes,
-        paceSeconds,
-        "half-marathon",
-        isMinutesPerMile,
-    )}
-</p>
-<!-- <p>10km: {paceToRaceTime(paceMinutes, paceSeconds, toggleMilesAndKM, 10)}</p> -->
-<p class="">
-    10km {calculateRaceTime(paceMinutes, paceSeconds, "10k", isMinutesPerMile)}
-</p>
-<p class="">
-    5km {calculateRaceTime(paceMinutes, paceSeconds, "5k", isMinutesPerMile)}
-</p>
+<h2 class="font-semibold">Finishing Times</h2>
+
+<div class="grid grid-cols-3 p-1">
+    <p class="">Marathon:</p>
+    <p class="col-span-2">
+        {calculateRaceTime(
+            paceMinutes,
+            paceSeconds,
+            "marathon",
+            isMinutesPerMile,
+        )}
+    </p>
+    <p class="">Half-Marathon:</p>
+    <p class="col-span-2">
+        {calculateRaceTime(
+            paceMinutes,
+            paceSeconds,
+            "half-marathon",
+            isMinutesPerMile,
+        )}
+    </p>
+    <p class="">10km:</p>
+    <p class="col-span-2">
+        {calculateRaceTime(paceMinutes, paceSeconds, "10k", isMinutesPerMile)}
+    </p>
+    <p class="">5km:</p>
+    <p class="col-span-2">
+        {calculateRaceTime(paceMinutes, paceSeconds, "5k", isMinutesPerMile)}
+    </p>
+</div>
