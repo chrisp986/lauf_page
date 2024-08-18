@@ -36,7 +36,11 @@
 
 <div class="flex-auto w-32 text-right">
     {#if isMinutesPerMile}
-        <p>{paceMinutes}:{paceSeconds}/Mile</p>
+        <p>
+            {paceMinutes.toString().padStart(2, "0")}:{paceSeconds
+                .toString()
+                .padStart(2, "0")}/Mile
+        </p>
     {:else}
         <p class="font-bold">
             {convertPace(paceMinutes, paceSeconds, isMinutesPerMile)}/Mile
@@ -55,7 +59,9 @@
         </p>
     {:else}
         <p>
-            {paceMinutes}:{paceSeconds}/KM
+            {paceMinutes.toString().padStart(2, "0")}:{paceSeconds
+                .toString()
+                .padStart(2, "0")}/KM
         </p>
     {/if}
 </div>

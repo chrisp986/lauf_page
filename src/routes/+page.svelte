@@ -6,7 +6,6 @@
   import PaceConvertText from "$lib/components/paceConvertText.svelte";
   import PaceConvertSelect from "$lib/components/paceConvertSelect.svelte";
   import RaceTime from "$lib/components/raceTime.svelte";
-  import type convertPropsRaceTime from "$lib/components/raceTime.svelte";
 
   let paceMinutes: number = $state(4);
   let paceSeconds: number = $state(36);
@@ -19,48 +18,6 @@
 
   function* range(start: number, end: number): Generator<number> {
     for (let i = start; i <= end; i++) yield i;
-  }
-
-  type RaceDistance = "marathon" | "half-marathon" | "10k" | "5k";
-
-  function calculateFinishTime(
-    paceMinutes: number,
-    paceSeconds: number,
-    raceDistance: RaceDistance,
-    isMinutesPerMile: boolean = false,
-  ): string {
-    // Convert pace to total seconds
-    const paceInSeconds = paceMinutes * 60 + paceSeconds;
-
-    // Define distances in kilometers
-    const distances: { [key in RaceDistance]: number } = {
-      marathon: 42.195,
-      "half-marathon": 21.0975,
-      "10k": 10,
-      "5k": 5,
-    };
-
-    // Get the distance in km for the selected race
-    const distanceKm = distances[raceDistance];
-
-    // Calculate total seconds for the given distance
-    let totalSeconds: number;
-    if (isMinutesPerMile) {
-      // If pace is in minutes per mile, convert to km pace
-      const kmPace = paceInSeconds / 1.60934;
-      totalSeconds = kmPace * distanceKm;
-    } else {
-      // Pace is already in minutes per km
-      totalSeconds = paceInSeconds * distanceKm;
-    }
-
-    // Convert total seconds to hours, minutes, and seconds
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = Math.floor(totalSeconds % 60);
-
-    // Format the result as a string
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   }
 
   // let redditData: Writable<RedditTopResponse>;
@@ -90,7 +47,7 @@
       bind:value={paceMinutes}
       class="text-lg h-full bg-gray-50/50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
-      {#each range(0, 20) as i}
+      {#each range(0, 15) as i}
         <option>{i}</option>
       {/each}
     </select>
