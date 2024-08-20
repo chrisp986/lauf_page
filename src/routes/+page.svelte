@@ -31,13 +31,17 @@
   // });
 </script>
 
-<!-- svelte-ignore state_referenced_locally -->
-<h2 class="text-lg mb-2">Pace Converter</h2>
-<p class="text-sm mb-2">
-  Convert the pace between minutes per Mile and minutes per KM.
-</p>
+<div class="grid justify-items-center mt-4">
+  <h2 class="text-2xl lg:text-4xl lg:mb-2">Pace Converter</h2>
+  <div class="text-sm lg:text-base">
+    Convert the pace between minutes per Mile and minutes per KM.
+  </div>
+  <hr
+    class="w-60 lg:w-96 h-px mt-4 mb-6 lg:my-6 bg-gray-400 border-0 dark:bg-gray-700"
+  />
+</div>
 
-<div class="flex mb-4">
+<div class="flex lg:justify-center">
   <!--TODO -->
   <!-- <PaceConvertSelect {paceMinutes} {paceSeconds} {toggleMilesAndKM} /> -->
   <div class="max-w-sm w-64">
@@ -80,11 +84,13 @@
   </div>
 </div>
 
-<div class="flex mb-4">
+<div class="flex my-4 text-lg lg:text-xl">
   <PaceConvertText {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
-<RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
+<div class="">
+  <RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
+</div>
 
 <!-- {#if $redditData}
 <ul>

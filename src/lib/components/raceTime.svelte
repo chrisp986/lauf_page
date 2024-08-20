@@ -53,31 +53,31 @@
 
 <h2 class="font-semibold">Finishing Times</h2>
 
-<div class="grid grid-cols-3 p-1">
-    <p class="">Marathon:</p>
-    <p class="col-span-2">
+<div class="grid grid-cols-2 mb-2 ml-3">
+    <div class="">Marathon:</div>
+    <div class="">
         {calculateRaceTime(
             paceMinutes,
             paceSeconds,
             "marathon",
             isMinutesPerMile,
         )}
-    </p>
-    <p class="">Half-Marathon:</p>
-    <p class="col-span-2">
+    </div>
+    <div class="">Half-Marathon:</div>
+    <div class="">
         {calculateRaceTime(
             paceMinutes,
             paceSeconds,
             "half-marathon",
             isMinutesPerMile,
         )}
-    </p>
-    <p class="">10km:</p>
-    <p class="col-span-2">
+    </div>
+    <div class="">10km:</div>
+    <div class="">
         {calculateRaceTime(paceMinutes, paceSeconds, "10k", isMinutesPerMile)}
-    </p>
-    <p class="">5km:</p>
-    <p class="col-span-2">
+    </div>
+    <div class="">5km:</div>
+    <div class="">
         {calculateRaceTime(paceMinutes, paceSeconds, "5k", isMinutesPerMile)}
-    </p>
+    </div>
 </div>

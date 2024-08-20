@@ -2,13 +2,13 @@
     import "../app.css";
 </script>
 
-<header class="bg-gray-100 sticky top-0 z-10 p-2 drop-shadow">
-    <nav class="flex md:flex md:flex-grow flex-row justify-end space-x-1">
+<header class="bg-gray-100 sticky top-0 z-10 p-2 drop-shadow content-center">
+    <nav class="flex flex-row justify-end space-x-1 md:flex md:flex-grow">
         <a class="m-1 text-gray-800" href="/">home</a>
         <a class="m-1 text-gray-800" href="/about">about</a>
     </nav>
     <h1
-        class="ml-1 scroll-m-20 text-2xl underline text-gray-800 font-extrabold tracking-tight lg:text-4xl"
+        class="flex ml-1 scroll-m-20 text-2xl underline text-gray-800 font-extrabold tracking-tight lg:text-4xl"
     >
         Lauf-Page!
     </h1>
