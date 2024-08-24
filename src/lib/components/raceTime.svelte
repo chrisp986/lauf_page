@@ -51,9 +51,11 @@
     }
 </script>
 
-<h2 class="font-semibold">Finishing Times</h2>
+<h2 class="font-semibold text-lg">Finishing Times</h2>
 
 <div class="grid grid-cols-2 mb-2 ml-3">
+    <div class="text-base font-medium">Race Distance</div>
+    <div class="text-base font-medium">Time</div>
     <div class="">Marathon:</div>
     <div class="">
         {calculateRaceTime(

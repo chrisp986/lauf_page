@@ -88,7 +88,7 @@
   <PaceConvertText {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
-<div class="">
+<div class="lg:w-96">
   <RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
