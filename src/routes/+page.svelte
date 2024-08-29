@@ -29,6 +29,71 @@
   //     console.error('Failed to fetch Reddit data:', error);
   //   }
   // });
+
+  // Define the TypeScript interfaces
+  interface RedditTopResponse {
+    kind: string;
+    data: RedditListing;
+  }
+
+  interface RedditListing {
+    after: string | null;
+    before: string | null;
+    children: RedditPost[];
+    dist: number;
+    modhash: string;
+  }
+
+  interface RedditPost {
+    kind: string;
+    data: {
+      id: string;
+      subreddit: string;
+      title: string;
+      author: string;
+      score: number;
+      ups: number;
+      downs: number;
+      num_comments: number;
+      created_utc: number;
+      url: string;
+      permalink: string;
+      selftext: string;
+      thumbnail: string;
+      is_self: boolean;
+      over_18: boolean;
+      stickied: boolean;
+    };
+  }
+
+  // Component state to hold the response data
+  let redditData: RedditTopResponse | null = $state(null);
+  let error: string | null = $state(null);
+  // const { subreddit = 'all', limit = 10, time = 'day', after, before } = params;
+
+  const subreddit: string = "running";
+  const limit: number = 10;
+  const time: string = "week";
+  let url = `https://www.reddit.com/r/${subreddit}/top.json?limit=${limit}&t=${time}`;
+
+  // Fetch data when the component is mounted
+  onMount(async () => {
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok)
+        throw new Error(`Error fetching data: ${response.statusText}`);
+      const data = await response.json();
+      redditData = data as RedditTopResponse;
+    } catch (err) {
+      error = (err as Error).message;
+    }
+  });
 </script>
 
 <div class="grid justify-items-center mt-4">
@@ -88,8 +153,40 @@
   <PaceConvertText {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
-<div class="lg:w-96">
+<div class="lg:w-96 mb-10">
   <RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
+</div>
+
+<div class="p-4">
+  {#if error}
+    <p>Error: {error}</p>
+  {:else if !redditData}
+    <p>Loading...</p>
+  {:else}
+    <p class="font-bold text-lg">Top Posts on Reddit</p>
+    <div class="border-3 rounded-md bg-grey-200">
+      <ul>
+        {#each redditData.data.children as post}
+          <div class="border-2 rounded-md shadow-sm m-1 p-1">
+            <li>
+              <a
+                href={"https://www.reddit.com" + post.data.permalink}
+                target="_blank"
+                class="font-medium"
+              >
+                {post.data.title}
+              </a>
+              <p>
+                Score: {post.data.score} | Comments: {post.data.num_comments}
+              </p>
+              <p>Subreddit: r/{post.data.subreddit}</p>
+              <p>Pic: r/{post.data.thumbnail}</p>
+            </li>
+          </div>
+        {/each}
+      </ul>
+    </div>
+  {/if}
 </div>
 
 <!-- {#if $redditData}
