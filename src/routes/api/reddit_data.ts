@@ -12,23 +12,26 @@ export async function fetchRedditTop(params: RedditTopParams): Promise<Writable<
 
   try {
     console.log("URL", url);
-    const response = await fetch(url, {method: 'GET',
+    const response = await fetch(url, {
+      method: 'GET',
       headers: {
         Accept: 'application/json',
-      },});
+      },
+    });
     if (!response.ok) {
-      throw new Error('Error status: ${response.status}');
+      throw new Error(`Error status: ${response.status}`);
     }
     const jsonData: RedditTopResponse = await response.json();
     data.set(jsonData);
     return data;
   } catch (error) {
-  if (error instanceof Error) {
-    console.log('Error message: ', error.message);
-    return error.message;
-  } else {
-    console.log('Unexpected error: ', error);
-    return 'An unexpected error occurred';
+
+    if (error instanceof Error) {
+      console.log('Error message: ', error.message);
+      // return Promise.resolve({});
+    } else {
+      console.log('Unexpected error: ', error);
+      return data;
+    }
   }
-}
 }
