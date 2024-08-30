@@ -76,9 +76,45 @@
   const time: string = "week";
   let url = `https://www.reddit.com/r/${subreddit}/top.json?limit=${limit}&t=${time}`;
 
-  // Fetch data when the component is mounted
+  // Add caching
+  const CACHE_KEY = "redditDataCache";
+  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+  // // Fetch data when the component is mounted
+  // onMount(async () => {
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: "GET",
+  //       headers: {
+  //         Accept: "application/json",
+  //       },
+  //     });
+
+  //     if (!response.ok)
+  //       throw new Error(`Error fetching data: ${response.statusText}`);
+  //     const data = await response.json();
+  //     redditData = data as RedditTopResponse;
+  //   } catch (err) {
+  //     error = (err as Error).message;
+  //   }
+  // });
+
   onMount(async () => {
     try {
+      // Check if there's cached data
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      if (cachedData) {
+        const { data, timestamp } = JSON.parse(cachedData);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          // Use cached data if it's still valid
+          console.log("Using cached data");
+          redditData = data as RedditTopResponse;
+          return;
+        }
+      }
+
+      // If no valid cached data, fetch from API
+      console.log("Fetching new data");
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -88,8 +124,18 @@
 
       if (!response.ok)
         throw new Error(`Error fetching data: ${response.statusText}`);
+
       const data = await response.json();
       redditData = data as RedditTopResponse;
+
+      // Cache the new data
+      localStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({
+          data: redditData,
+          timestamp: Date.now(),
+        }),
+      );
     } catch (err) {
       error = (err as Error).message;
     }
@@ -164,16 +210,19 @@
     <p>Loading...</p>
   {:else}
     <p class="font-bold text-lg">Top Posts on Reddit</p>
-    <div class="border-3 rounded-md bg-grey-200">
+    <div class="border-3 rounded-md">
       <ul>
         {#each redditData.data.children as post}
-          <div class="border-2 rounded-md shadow-sm m-1 p-1">
+          <div
+            class="hover:bg-accent border-2 rounded-md shadow-sm m-1 p-1 bg-gray-300"
+            style="position:relative"
+          >
             <li>
               <a
                 href={"https://www.reddit.com" + post.data.permalink}
                 target="_blank"
                 class="font-medium"
-              >
+                ><span class="link-spanner"></span>
                 {post.data.title}
               </a>
               <p>
