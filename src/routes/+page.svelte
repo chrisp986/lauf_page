@@ -78,26 +78,7 @@
 
   // Add caching
   const CACHE_KEY = "redditDataCache";
-  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
-
-  // // Fetch data when the component is mounted
-  // onMount(async () => {
-  //   try {
-  //     const response = await fetch(url, {
-  //       method: "GET",
-  //       headers: {
-  //         Accept: "application/json",
-  //       },
-  //     });
-
-  //     if (!response.ok)
-  //       throw new Error(`Error fetching data: ${response.statusText}`);
-  //     const data = await response.json();
-  //     redditData = data as RedditTopResponse;
-  //   } catch (err) {
-  //     error = (err as Error).message;
-  //   }
-  // });
+  const CACHE_DURATION = 60 * 60 * 1000; // 60 minutes in milliseconds
 
   onMount(async () => {
     try {
