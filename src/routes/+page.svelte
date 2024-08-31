@@ -1,11 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { fetchRedditTop } from "./api/reddit_data";
-  import type { RedditTopResponse, RedditPost } from "./api/reddit_types";
+
+  // import type { RedditTopResponse, RedditPost } from "./api/reddit_types";
   import type { Writable } from "svelte/store";
   import PaceConvertText from "$lib/components/paceConvertText.svelte";
   import PaceConvertSelect from "$lib/components/paceConvertSelect.svelte";
   import RaceTime from "$lib/components/raceTime.svelte";
+  // import RedditPosts from "$lib/components/redditPosts.svelte";
+
+  import RedditPosts from "$lib/components/redditPosts.svelte";
 
   let paceMinutes: number = $state(4);
   let paceSeconds: number = $state(36);
@@ -20,107 +23,133 @@
     for (let i = start; i <= end; i++) yield i;
   }
 
-  // let redditData: Writable<RedditTopResponse>;
+  // const subreddits = ["running", "AdvancedRunning"];
+  // const postsPerSubreddit = 5;
+  // const cacheDuration = 5 * 60 * 1000; // 5 minutes
+
+  // let redditPosts: RedditPost[] = [];
+  // let error: string | null = null;
 
   // onMount(async () => {
+  //   const fetcher = new RedditDataFetcher(10 * 60 * 1000); // 10 minutes cache
+  //   const subreddits = ["typescript", "javascript", "webdev", "programming"];
+
   //   try {
-  //     redditData = await fetchRedditTop({ subreddit: 'running', limit: 2, time: 'week' });
-  //   } catch (error) {
-  //     console.error('Failed to fetch Reddit data:', error);
+  //     redditPosts = await fetcher.fetchMultipleSubreddits(subreddits, 10);
+  //   } catch (err) {
+  //     error = (err as Error).message;
   //   }
   // });
 
-  // Define the TypeScript interfaces
-  interface RedditTopResponse {
-    kind: string;
-    data: RedditListing;
-  }
+  // let redditPosts: RedditPost[] = [];
+  // let error: string | null = null;
 
-  interface RedditListing {
-    after: string | null;
-    before: string | null;
-    children: RedditPost[];
-    dist: number;
-    modhash: string;
-  }
+  // onMount(async () => {
+  //   const fetcher = new RedditDataFetcher(10 * 60 * 1000); // 10 minutes cache
+  //   const subreddits = ["typescript", "javascript", "webdev", "programming"];
 
-  interface RedditPost {
-    kind: string;
-    data: {
-      id: string;
-      subreddit: string;
-      title: string;
-      author: string;
-      score: number;
-      ups: number;
-      downs: number;
-      num_comments: number;
-      created_utc: number;
-      url: string;
-      permalink: string;
-      selftext: string;
-      thumbnail: string;
-      is_self: boolean;
-      over_18: boolean;
-      stickied: boolean;
-    };
-  }
+  //   try {
+  //     redditPosts = await fetcher.fetchMultipleSubreddits(subreddits, 10);
+  //   } catch (err) {
+  //     error = (err as Error).message;
+  //   }
+  // });
 
-  // Component state to hold the response data
-  let redditData: RedditTopResponse | null = $state(null);
-  let error: string | null = $state(null);
-  // const { subreddit = 'all', limit = 10, time = 'day', after, before } = params;
+  // -----------------------------------------------------------
 
-  const subreddit: string = "running";
-  const limit: number = 10;
-  const time: string = "week";
-  let url = `https://www.reddit.com/r/${subreddit}/top.json?limit=${limit}&t=${time}`;
+  // // Define the TypeScript interfaces
+  // interface RedditTopResponse {
+  //   kind: string;
+  //   data: RedditListing;
+  // }
 
-  // Add caching
-  const CACHE_KEY = "redditDataCache";
-  const CACHE_DURATION = 60 * 60 * 1000; // 60 minutes in milliseconds
+  // interface RedditListing {
+  //   after: string | null;
+  //   before: string | null;
+  //   children: RedditPost[];
+  //   dist: number;
+  //   modhash: string;
+  // }
 
-  onMount(async () => {
-    try {
-      // Check if there's cached data
-      const cachedData = localStorage.getItem(CACHE_KEY);
-      if (cachedData) {
-        const { data, timestamp } = JSON.parse(cachedData);
-        if (Date.now() - timestamp < CACHE_DURATION) {
-          // Use cached data if it's still valid
-          console.log("Using cached data");
-          redditData = data as RedditTopResponse;
-          return;
-        }
-      }
+  // interface RedditPost {
+  //   kind: string;
+  //   data: {
+  //     id: string;
+  //     subreddit: string;
+  //     title: string;
+  //     author: string;
+  //     score: number;
+  //     ups: number;
+  //     downs: number;
+  //     num_comments: number;
+  //     created_utc: number;
+  //     url: string;
+  //     permalink: string;
+  //     selftext: string;
+  //     thumbnail: string;
+  //     is_self: boolean;
+  //     over_18: boolean;
+  //     stickied: boolean;
+  //   };
+  // }
 
-      // If no valid cached data, fetch from API
-      console.log("Fetching new data");
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      });
+  // // Component state to hold the response data
+  // let redditData: RedditTopResponse | null = $state(null);
+  // let error: string | null = $state(null);
+  // // const { subreddit = 'all', limit = 10, time = 'day', after, before } = params;
 
-      if (!response.ok)
-        throw new Error(`Error fetching data: ${response.statusText}`);
+  // const subreddit: string = "running";
+  // const limit: number = 10;
+  // const time: string = "week";
+  // let url = `https://www.reddit.com/r/${subreddit}/top.json?limit=${limit}&t=${time}`;
 
-      const data = await response.json();
-      redditData = data as RedditTopResponse;
+  // // Add caching
+  // const CACHE_KEY = "redditDataCache";
+  // const CACHE_DURATION = 60 * 60 * 1000; // 60 minutes in milliseconds
 
-      // Cache the new data
-      localStorage.setItem(
-        CACHE_KEY,
-        JSON.stringify({
-          data: redditData,
-          timestamp: Date.now(),
-        }),
-      );
-    } catch (err) {
-      error = (err as Error).message;
-    }
-  });
+  // onMount(async () => {
+  //   try {
+  //     // Check if there's cached data
+  //     const cachedData = localStorage.getItem(CACHE_KEY);
+  //     if (cachedData) {
+  //       const { data, timestamp } = JSON.parse(cachedData);
+  //       if (Date.now() - timestamp < CACHE_DURATION) {
+  //         // Use cached data if it's still valid
+  //         console.log("Using cached data");
+  //         redditData = data as RedditTopResponse;
+  //         return;
+  //       }
+  //     }
+
+  //     // If no valid cached data, fetch from API
+  //     console.log("Fetching new data");
+  //     const response = await fetch(url, {
+  //       method: "GET",
+  //       headers: {
+  //         Accept: "application/json",
+  //       },
+  //     });
+
+  //     if (!response.ok)
+  //       throw new Error(`Error fetching data: ${response.statusText}`);
+
+  //     const data = await response.json();
+  //     redditData = data as RedditTopResponse;
+
+  //     // Cache the new data
+  //     localStorage.setItem(
+  //       CACHE_KEY,
+  //       JSON.stringify({
+  //         data: redditData,
+  //         timestamp: Date.now(),
+  //       }),
+  //     );
+  //   } catch (err) {
+  //     error = (err as Error).message;
+  //   }
+  // });
+
+  // -----------------------------------------------------------------------------
 </script>
 
 <div class="grid justify-items-center mt-4">
@@ -184,7 +213,11 @@
   <RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
-<div class="p-4">
+<!-- <RedditPosts {subreddits} {postsPerSubreddit} {cacheDuration} /> -->
+
+<RedditPosts />
+
+<!-- <div class="p-4">
   {#if error}
     <p>Error: {error}</p>
   {:else if !redditData}
@@ -217,17 +250,4 @@
       </ul>
     </div>
   {/if}
-</div>
-
-<!-- {#if $redditData}
-<ul>
-  {#each $redditData.data.children as post}
-      <li>
-        <a href="https://www.reddit.com{post.data.permalink}">{post.data.title}</a>
-        by {post.data.author} (Score: {post.data.score})
-      </li>
-    {/each}
-  </ul>
-{:else}
-  <p>Loading top Reddit posts...</p>
-{/if} -->
+</div> -->
