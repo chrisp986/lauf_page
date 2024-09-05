@@ -45,7 +45,7 @@
   });
 </script>
 
-<main>
+<div>
   <h1>Top Posts from Multiple Subreddits</h1>
 
   {#if isLoading}
@@ -58,7 +58,6 @@
       {#each redditPosts as post, index}
         <div class="hover:bg-accent border-2 m-1 p-1 bg-white flex flex-row">
           <li>
-            <!-- <p>Number: {index + 1}</p> -->
             <p class="font-medium text-lg">{post.title}</p>
             <p>
               Subreddit: r/{post.subreddit} | Score: {post.score} |
@@ -71,7 +70,7 @@
       {/each}
     </ul>
   {/if}
-</main>
+  </div>
 
 <!-- // <div class="p-4">
 // //   {#if error}
