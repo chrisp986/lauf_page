@@ -6,6 +6,7 @@
   let isLoading = true;
   let error: string | null = null;
   let progress = 0;
+  let limitPostsVisible: number = 10;
 
   const subreddits = ["running", "AdvancedRunning"];
   const postLimit = 10;
@@ -55,22 +56,32 @@
     <p class="error">Error: {error}</p>
   {:else}
     <ul>
-      {#each redditPosts as post, index}
-        <div class="hover:bg-accent border-2 m-1 p-1 bg-white flex flex-row">
+      {#each redditPosts.slice(0, limitPostsVisible) as post}
+        <div
+          class="hover:bg-accent border-2 m-1 p-5 bg-white grid"
+          style="position:relative"
+        >
           <li>
-            <p class="font-medium text-lg">{post.title}</p>
+            <a
+              href={post.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-medium text-medium md:text-lg"
+            >
+              <span class="link-spanner"></span>{post.title}</a
+            >
+            <p class="text-sm md:text-base chars_limit_sm md:chars_limit_md">
+              {post.selftext}
+            </p>
             <p>
               Subreddit: r/{post.subreddit} | Score: {post.score} |
             </p>
-            <a href={post.url} target="_blank" rel="noopener noreferrer"
-              >View Post</a
-            >
           </li>
         </div>
       {/each}
     </ul>
   {/if}
-  </div>
+</div>
 
 <!-- // <div class="p-4">
 // //   {#if error}

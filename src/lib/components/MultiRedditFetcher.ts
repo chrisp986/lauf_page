@@ -9,6 +9,7 @@ export interface RedditPost {
     subreddit: string;
     ups: number;
     downs: number;
+    selftext: string;
 }
 
 interface RedditTopResponse {
