@@ -87,22 +87,16 @@
   z-index: 1;
 }
 
-.chars_limit_lg {
-  width: 100ch;
+.chars-limit-header {
+  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+
 }
 
-.chars_limit_md {
-  width: 60ch;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.chars_limit_sm {
-  width: 30ch;
+.chars-limit-text {
+  width: 95%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
