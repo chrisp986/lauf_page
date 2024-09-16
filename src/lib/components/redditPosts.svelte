@@ -2,15 +2,16 @@
   import { onMount } from "svelte";
   import { MultiRedditFetcher, type RedditPost } from "./MultiRedditFetcher";
 
-  let redditPosts: RedditPost[] = [];
-  let isLoading = true;
-  let error: string | null = null;
-  let progress = 0;
+  let redditPosts: RedditPost[] = $state([]);
+  let isLoading = $state(true);
+  let error: string | null = $state(null);
+  let progress = $state(0);
   let limitPostsVisible: number = 10;
+  let selectedValues: string[] = $state([]);
 
   const subreddits = ["running", "AdvancedRunning"];
-  const postLimit = 10;
-  const cacheDuration = 10 * 60 * 1000; // 10 minutes
+  const postLimit = 15;
+  const cacheDuration = 60 * 60 * 1000; // 60 minutes
   const time = "week";
 
   const multiFetcher = new MultiRedditFetcher(
@@ -44,10 +45,31 @@
   onMount(() => {
     fetchDataWithProgress();
   });
+
+  function handleCheckboxChange(sub: string, isChecked: boolean): void {
+    if (isChecked) {
+      // If checked, add to selectedValues array
+      selectedValues = [...selectedValues, sub];
+    } else {
+      // If unchecked, remove from selectedValues array
+      selectedValues = selectedValues.filter((value) => value !== sub);
+    }
+  }
 </script>
 
 <div>
   <h1>Top Posts from Multiple Subreddits</h1>
+
+  {#each subreddits as sub}
+  <label>
+    <input type="checkbox" 
+           onchange={(e: Event) => handleCheckboxChange(sub, (e.target as HTMLInputElement).checked)}>
+    {sub}
+</label>
+  {/each}
+  <p>Selected: {selectedValues.join(", ")}</p>
+
+  <br />
 
   {#if isLoading}
     <p>Loading posts... {progress.toFixed(0)}% complete</p>
@@ -56,8 +78,10 @@
     <p class="error">Error: {error}</p>
   {:else}
     <ul>
-      {#each redditPosts.slice(0, limitPostsVisible) as post}
-        <!-- {#if post.subreddit != "AdvancedRunning"} -->
+      {#each redditPosts as post, index}
+        <!-- {#each redditPosts.slice(0, limitPostsVisible) as post} -->
+        <!-- {#if post.subreddit != "running"} -->
+        <!-- {#if index <= limitPostsVisible} -->
         <li>
           <div
             class="hover:bg-accent border-2 m-1 bg-white grid grid-cols-[10%_70%_20%] grid-rows-2"
@@ -67,6 +91,7 @@
               class="flex items-center justify-center row-span-2 bg-slate-300 p-3 font-medium"
             >
               {post.score}
+              {index}
             </div>
 
             <div class="max-w-2xl px-3 pt-2">
@@ -95,45 +120,12 @@
           </div>
         </li>
         <!-- {/if} -->
+        <!-- {/if} -->
       {/each}
     </ul>
   {/if}
 </div>
 
-<!-- // <div class="p-4">
-// //   {#if error}
-// //     <p>Error: {error}</p>
-// //   {:else if !redditData}
-// //     <p>Loading...</p>
-// //   {:else}
-// //     <p class="font-bold text-lg">Top Posts on Reddit</p>
-// //     <div class="border-3 rounded-md">
-// //       <ul>
-// //         {#each redditData.data.children as post}
-// //           <div
-// //             class="hover:bg-accent border-2 rounded-md shadow-sm m-1 p-1 bg-gray-300"
-// //             style="position:relative"
-// //           >
-// //             <li>
-// //               <a
-// //                 href={"https://www.reddit.com" + post.data.permalink}
-// //                 target="_blank"
-// //                 class="font-medium"
-// //                 ><span class="link-spanner"></span>
-// //                 {post.data.title}
-// //               </a>
-// //               <p>
-// //                 Score: {post.data.score} | Comments: {post.data.num_comments}
-// //               </p>
-// //               <p>Subreddit: r/{post.data.subreddit}</p>
-// //               <p>Pic: r/{post.data.thumbnail}</p>
-// //             </li>
-// //           </div>
-// //         {/each}
-// //       </ul>
-// //     </div>
-// //   {/if}
-// // </div> -->
 <style>
   /* progress {
     width: 100%;
