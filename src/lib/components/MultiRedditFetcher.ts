@@ -66,7 +66,7 @@ class RedditDataFetcher {
     private subreddit: string;
     private limit: number;
 
-    constructor(subreddit: string, limit: number = 5, cacheDurationMs: number = 5 * 60 * 1000, time: string = 'week') {
+    constructor(subreddit: string, limit: number, cacheDurationMs: number, time: string) {
         this.subreddit = subreddit;
         this.limit = limit;
         this.CACHE_KEY = `reddit_${subreddit}_${limit}`;
@@ -80,7 +80,7 @@ class RedditDataFetcher {
             const cachedData = localStorage.getItem(this.CACHE_KEY);
             if (cachedData) {
                 const { data, timestamp } = JSON.parse(cachedData) as CacheEntry<RedditPost[]>;
-                if (Date.now() - timestamp < this.CACHE_DURATION || data.length != this.limit) {
+                if (Date.now() - timestamp < this.CACHE_DURATION) {
                     console.log(`Using cached data for r/${this.subreddit}`);
                     return data;
                 }
@@ -88,6 +88,8 @@ class RedditDataFetcher {
 
             // If no valid cached data, fetch from API
             console.log(`Fetching new data for r/${this.subreddit}`);
+            console.log(`This url r/${this.url}`);
+
             const response = await fetch(this.url, {
                 method: "GET",
                 headers: {
@@ -128,7 +130,7 @@ export class MultiRedditFetcher {
 
     constructor(subreddits: string[], limit: number, cacheDurationMs: number = 5 * 60 * 1000, time: string = 'week') {
         this.fetchers = new Map(
-            subreddits.map(subreddit => [subreddit, new RedditDataFetcher(subreddit, limit, cacheDurationMs)])
+            subreddits.map(subreddit => [subreddit, new RedditDataFetcher(subreddit, limit, cacheDurationMs, time)])
         );
         // Rate limit to 5 request per second, with a burst capacity of 5 requests
         this.rateLimiter = new RateLimiter(4, 5);

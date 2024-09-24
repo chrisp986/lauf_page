@@ -7,10 +7,10 @@
   let error: string | null = $state(null);
   let progress = $state(0);
   let limitPostsVisible: number = 10;
-  let selectedValues: string[] = $state([]);
+  let selectedValues: string[] = $state(["running", "AdvancedRunning", "Marathon_Training"]);
 
-  const subreddits = ["running", "AdvancedRunning"];
-  const postLimit = 15;
+  const subreddits = ["running", "AdvancedRunning", "Marathon_Training"];
+  const postLimit = 10;
   const cacheDuration = 60 * 60 * 1000; // 60 minutes
   const time = "week";
 
@@ -18,7 +18,10 @@
     subreddits,
     postLimit,
     cacheDuration,
+    time,
   );
+
+
 
   async function fetchDataWithProgress() {
     const totalSubreddits = subreddits.length;
@@ -34,7 +37,8 @@
         }),
       );
 
-      redditPosts = allPosts.flat().sort((a, b) => b.score - a.score);
+      // redditPosts = allPosts.flat().sort((a, b) => b.score - a.score);
+      redditPosts = allPosts.flat();
     } catch (err) {
       error = (err as Error).message;
     } finally {
@@ -46,6 +50,11 @@
     fetchDataWithProgress();
   });
 
+  function filteredPosts(redditPosts: RedditPost[], selectedValues: string[]): RedditPost[] {
+    return redditPosts.filter(redditPost => selectedValues.includes(redditPost.subreddit)).sort((a, b) => b.score - a.score).slice(0, limitPostsVisible);
+  }
+
+ 
   function handleCheckboxChange(sub: string, isChecked: boolean): void {
     if (isChecked) {
       // If checked, add to selectedValues array
@@ -55,33 +64,31 @@
       selectedValues = selectedValues.filter((value) => value !== sub);
     }
   }
-</script>
+</script> 
 
-<div>
-  <h1>Top Posts from Multiple Subreddits</h1>
-
+<div>  
+  <!-- grid-cols-[10%_12%_20%_22%] -->
+  <div class="grid grid-flow-col grid-cols-[12%_15%_35%_22%] sm:grid-cols-[10%_12%_20%_22%] items-center bg-white mx-1 border-2">
+    <p class="text-sm sm:text-5xl font-bold bg-reddit-orange w-1/10 text-white h-16 flex items-center justify-center">r/...</p>
   {#each subreddits as sub}
-  <label>
-    <input type="checkbox" 
-           onchange={(e: Event) => handleCheckboxChange(sub, (e.target as HTMLInputElement).checked)}>
-    {sub}
-</label>
-  {/each}
-  <p>Selected: {selectedValues.join(", ")}</p>
 
-  <br />
+    <label class="ml-auto px-3 text-xs sm:text-lg">
+    <input type="checkbox" class="w-4 h-4" checked 
+           onclick={(e: Event) => handleCheckboxChange(sub, (e.target as HTMLInputElement).checked)}>
+    {sub}
+  </label>
+  {/each}
+</div>
+
 
   {#if isLoading}
-    <p>Loading posts... {progress.toFixed(0)}% complete</p>
-    <progress value={progress} max="100"></progress>
+    <p class="flex items-center justify-center">Loading posts... {progress.toFixed(0)}% complete</p>
+    <!-- <progress value={progress} max="100"></progress> -->
   {:else if error}
     <p class="error">Error: {error}</p>
   {:else}
     <ul>
-      {#each redditPosts as post, index}
-        <!-- {#each redditPosts.slice(0, limitPostsVisible) as post} -->
-        <!-- {#if post.subreddit != "running"} -->
-        <!-- {#if index <= limitPostsVisible} -->
+        {#each filteredPosts(redditPosts, selectedValues) as post}
         <li>
           <div
             class="hover:bg-accent border-2 m-1 bg-white grid grid-cols-[10%_70%_20%] grid-rows-2"
@@ -91,7 +98,6 @@
               class="flex items-center justify-center row-span-2 bg-slate-300 p-3 font-medium"
             >
               {post.score}
-              {index}
             </div>
 
             <div class="max-w-2xl px-3 pt-2">
@@ -119,16 +125,12 @@
             <div class="border-l-2"></div>
           </div>
         </li>
-        <!-- {/if} -->
-        <!-- {/if} -->
+
       {/each}
     </ul>
   {/if}
 </div>
 
 <style>
-  /* progress {
-    width: 100%;
-    height: 20px;
-  } */
+
 </style>
