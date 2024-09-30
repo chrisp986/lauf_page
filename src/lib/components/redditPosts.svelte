@@ -100,8 +100,8 @@
               {post.score}
             </div>
 
-            <div class="w-full p-3">
-              <div class="w-full">
+            <div class="p-3 w-[85%] sm:w-[95%]">
+              <div class="">
                 <a
                 href={post.url}
                 target="_blank"
@@ -114,9 +114,9 @@
                 </p></a
                 >
                 <div
-                class="text-xs md:text-sm chars-limit-text text-gray-500 border-b-2 pb-2"
+                class="text-xs md:text-sm text-gray-500 chars-limit-text border-b-2 pb-1"
                 >
-                {post.selftext}
+                  {post.selftext}
               </div>
               <div class="text-xs md:text-sm items-end justify-end pt-2">
                 r/{post.subreddit}
