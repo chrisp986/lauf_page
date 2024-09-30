@@ -1,141 +1,118 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { fetchRedditTop } from './api/reddit_data';
-  import type { RedditTopResponse, RedditPost } from './api/reddit_types';
-  import type { Writable } from 'svelte/store';
+  import PaceConvertText from "$lib/components/paceConvertText.svelte";
+  import RaceTime from "$lib/components/raceTime.svelte";
+  import RedditPosts from "$lib/components/redditPosts.svelte";
 
-    let opts = [
-        {pk:1, name:"Kelvin Kiptum", pace_M: 4, pace_S: 36, distance: "Marathon", race:"Berlin", date:"01.01.2023"},
-        {pk:2, name:"second"},
-        {pk:3, name:"third"},
-    ]
-    
-    let chosen = 1;
-    $: current = opts.find(opt => opt.pk === chosen);
+  let paceMinutes: number = $state(4);
+  let paceSeconds: number = $state(36);
 
+  let isMinutesPerMile = $state(true);
 
-    let paceMinutes: number = $state(4);
-    let paceSeconds: number = $state(36);
+  function toggleFunction() {
+    isMinutesPerMile = !isMinutesPerMile;
+  }
 
-    let isFirstFunction = $state(true);
-
-    function firstFunction() {
-      console.log("First Function");
-    }
-
-    function secondFunction() {
-      console.log("Second Function");
-    }
-
-    function toggleFunction() {
-      isFirstFunction = !isFirstFunction;
-      if (isFirstFunction) {
-        firstFunction();
-      } else {
-        secondFunction();
-      }
-    }
-
-    $effect(() => {
-      console.log("Current function ${isFirstFunction ? '1' : '2'}");
-
-    })
-
-    function convertToKilometers(paceMinutes: number, paceSeconds: number) {
-        const milesToKM: number = 1.609344;
-        const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
-        const timeInDecimal: number = paceMinutes + secondsToDecimal;
-
-        console.log("timeDecimal", timeInDecimal / milesToKM);
-
-        const minutesKM = timeInDecimal / milesToKM;
-        console.log("remainder", minutesKM % 1);
-
-        const decimalToSeconds: number = (minutesKM % 1) * 0.6;
-        console.log("decSeconds", Math.floor(minutesKM) + decimalToSeconds);
-
-        return (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
-    }
-
-    function convertToMiles(paceMinutes: number, paceSeconds: number) {
-        const conversionRate: number = 1.609344;
-        const secondsToDecimal: number = paceSecondsToDecimal(paceSeconds);
-        const timeInDecimal: number = paceMinutes + secondsToDecimal;
-
-        console.log("timeDecimal", timeInDecimal / );
-
-        const minutesKM = timeInDecimal * conversionRate;
-        console.log("remainder", minutesKM % 1);
-
-        const decimalToSeconds: number = (minutesKM % 1) * 0.6;
-        console.log("decSeconds", Math.floor(minutesKM) + decimalToSeconds);
-
-        return (Math.floor(minutesKM) + decimalToSeconds).toFixed(2);
-    }
-
-
-    function paceSecondsToDecimal (seconds: number) {
-      return seconds / 60;
-    }
-
-
-    // let redditData: Writable<RedditTopResponse>;
-
-    // onMount(async () => {
-    //   try {
-    //     redditData = await fetchRedditTop({ subreddit: 'running', limit: 2, time: 'week' });
-    //   } catch (error) {
-    //     console.error('Failed to fetch Reddit data:', error);
-    //   }
-    // });
-
-
-
-
+  function* range(start: number, end: number): Generator<number> {
+    for (let i = start; i <= end; i++) yield i;
+  }
 </script>
 
-<div class="container">
-    <div class="item"></div>
-    <div class="points"></div>
-    <div class="item"></div>
-    <div class="item"></div>
-    <div class="form-item">
-        <select id="number-dd" name="number" bind:value={paceMinutes}>
-            {#each { length: 20 } as _, i}
-                <option>{i + 1}</option>
-            {/each}
-        </select>
-    </div>
-    <div class="points">:</div>
-    <div class="form-item">
-        <select id="number-dd" name="number" bind:value={paceSeconds}>
-            {#each { length: 59 } as _, i}
-                <option>{i + 1}</option>
-            {/each}
-        </select>
-    </div>
-    <div class="form-item">
-        <button onclick={toggleFunction}>
-          {isFirstFunction ? "First" : "Second"}
-        </button>
-    </div>
-    <div class="item row-3">
-        <p>Pace: {paceMinutes}:{paceSeconds} /Mile</p>
-        <p>
-            Pace: {convertToKilometers(paceMinutes, paceSeconds)} /KM
-        </p>
-    </div>
-<!-- {#if $redditData}
-  <ul>
-    {#each $redditData.data.children as post}
-      <li>
-        <a href="https://www.reddit.com{post.data.permalink}">{post.data.title}</a>
-        by {post.data.author} (Score: {post.data.score})
-      </li>
-    {/each}
-  </ul>
-{:else}
-  <p>Loading top Reddit posts...</p>
-{/if} -->
-
+<div class="grid justify-items-center mt-4">
+  <h2 class="text-2xl lg:text-4xl lg:mb-2">Pace Converter</h2>
+  <div class="text-sm lg:text-base">
+    Convert the pace between minutes per Mile and minutes per KM.
+  </div>
+  <hr
+    class="w-60 lg:w-96 h-px mt-4 mb-6 lg:my-6 bg-gray-400 border-0 dark:bg-gray-700"
+  />
 </div>
+
+<div class="flex lg:justify-center">
+  <!--TODO -->
+  <!-- <PaceConvertSelect {paceMinutes} {paceSeconds} {toggleMilesAndKM} /> -->
+  <div class="max-w-sm w-64">
+    <select
+      id="number-dd"
+      name="number"
+      bind:value={paceMinutes}
+      class="text-lg h-full bg-gray-50/50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    >
+      {#each range(0, 15) as i}
+        <option>{i}</option>
+      {/each}
+    </select>
+  </div>
+
+  <div class="text-xl w-6 font-extrabold flex items-center justify-center">
+    :
+  </div>
+
+  <div class="max-w-sm w-64">
+    <select
+      id="number-dd"
+      name="number"
+      bind:value={paceSeconds}
+      class="text-lg h-full bg-gray-50/50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    >
+      {#each range(0, 59) as i}
+        <option>{i}</option>
+      {/each}
+    </select>
+  </div>
+
+  <div class="max-w-sm w-64 ml-2">
+    <button
+      onclick={toggleFunction}
+      class="text-lg h-full w-full p-2.5 bg-gray-50/50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    >
+      {isMinutesPerMile ? "/Miles" : "/KM"}
+    </button>
+  </div>
+</div>
+
+<div class="flex my-4 text-lg lg:text-xl">
+  <PaceConvertText {paceMinutes} {paceSeconds} {isMinutesPerMile} />
+</div>
+
+<div class="lg:w-96 mb-10">
+  <RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
+</div>
+
+<!-- <RedditPosts {subreddits} {postsPerSubreddit} {cacheDuration} /> -->
+
+<RedditPosts />
+
+<!-- <div class="p-4">
+  {#if error}
+    <p>Error: {error}</p>
+  {:else if !redditData}
+    <p>Loading...</p>
+  {:else}
+    <p class="font-bold text-lg">Top Posts on Reddit</p>
+    <div class="border-3 rounded-md">
+      <ul>
+        {#each redditData.data.children as post}
+          <div
+            class="hover:bg-accent border-2 rounded-md shadow-sm m-1 p-1 bg-gray-300"
+            style="position:relative"
+          >
+            <li>
+              <a
+                href={"https://www.reddit.com" + post.data.permalink}
+                target="_blank"
+                class="font-medium"
+                ><span class="link-spanner"></span>
+                {post.data.title}
+              </a>
+              <p>
+                Score: {post.data.score} | Comments: {post.data.num_comments}
+              </p>
+              <p>Subreddit: r/{post.data.subreddit}</p>
+              <p>Pic: r/{post.data.thumbnail}</p>
+            </li>
+          </div>
+        {/each}
+      </ul>
+    </div>
+  {/if}
+</div> -->
