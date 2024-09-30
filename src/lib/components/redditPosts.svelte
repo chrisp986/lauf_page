@@ -67,23 +67,23 @@
 </script> 
 
 <div>  
-  <!-- grid-cols-[10%_12%_20%_22%] -->
-  <div class="grid grid-flow-col grid-cols-[12%_15%_35%_22%] sm:grid-cols-[10%_12%_20%_22%] items-center bg-white mx-1 border-2">
-    <p class="text-sm sm:text-5xl font-bold bg-reddit-orange w-1/10 text-white h-16 flex items-center justify-center">r/...</p>
+  <!-- <div class="grid grid-cols-[10%_90%] items-center bg-white mx-1 border-2"> -->
+  <div class="flex flex-col sm:flex-row items-left sm:items-center  bg-white mx-1 border-2">
+    <p class="font-redfont w-full text-4xl font-bold bg-reddit-orange sm:w-20 text-white h-16 flex items-center justify-center">r/...</p>
   {#each subreddits as sub}
-
-    <label class="ml-auto px-3 text-xs sm:text-lg">
-    <input type="checkbox" class="w-4 h-4" checked 
-           onclick={(e: Event) => handleCheckboxChange(sub, (e.target as HTMLInputElement).checked)}>
-    {sub}
-  </label>
+  <div class="flex flex-wrap flex-col px-4 py-2">
+    <label class="text-base sm:text-lg">
+      <input type="checkbox" class="w-4 h-4" checked 
+      onclick={(e: Event) => handleCheckboxChange(sub, (e.target as HTMLInputElement).checked)}>
+      {sub}
+    </label>
+  </div>
   {/each}
 </div>
 
 
   {#if isLoading}
     <p class="flex items-center justify-center">Loading posts... {progress.toFixed(0)}% complete</p>
-    <!-- <progress value={progress} max="100"></progress> -->
   {:else if error}
     <p class="error">Error: {error}</p>
   {:else}
@@ -91,39 +91,39 @@
         {#each filteredPosts(redditPosts, selectedValues) as post}
         <li>
           <div
-            class="hover:bg-accent border-2 m-1 bg-white grid grid-cols-[10%_70%_20%] grid-rows-2"
+            class="hover:bg-accent border-2 m-1 bg-white flex"
             style="position:relative"
           >
             <div
-              class="flex items-center justify-center row-span-2 bg-slate-300 p-3 font-medium"
+              class="flex items-center justify-center bg-slate-300 font-medium min-w-[15%] sm:min-w-20" 
             >
               {post.score}
             </div>
 
-            <div class="max-w-2xl px-3 pt-2">
-              <a
+            <div class="w-full p-3">
+              <div class="w-full">
+                <a
                 href={post.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="font-medium text-medium md:text-lg"
-              >
+                >
                 <span class="link-spanner"></span>
-                <p class="chars-limit-header">
+                <p class="chars-limit-text">
                   {post.title}
                 </p></a
-              >
+                >
+                <div
+                class="text-xs md:text-sm chars-limit-text text-gray-500 border-b-2 pb-2"
+                >
+                {post.selftext}
+              </div>
+              <div class="text-xs md:text-sm items-end justify-end pt-2">
+                r/{post.subreddit}
+              </div>
             </div>
-            <div class="border-l-2 flex items-end justify-end pr-2">
-              r/{post.subreddit}
-            </div>
-
-            <div
-              class="text-xs md:text-sm chars-limit-text pl-3 pt-1 text-gray-500"
-            >
-              {post.selftext}
-            </div>
-            <div class="border-l-2"></div>
           </div>
+        </div>
         </li>
 
       {/each}
