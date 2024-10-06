@@ -51,7 +51,7 @@
     }
 </script>
 
-<h2 class="font-semibold text-lg">Finishing Times</h2>
+<div class="flex font-semibold text-lg">Finishing Times</div>
 
 <div class="grid grid-cols-2 mb-2 ml-3">
     <div class="text-base font-medium">Race Distance</div>
