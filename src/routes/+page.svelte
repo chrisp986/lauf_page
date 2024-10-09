@@ -74,7 +74,8 @@
   <PaceConvertText {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
-<div class="lg:w-96 mb-10">
+<div class="lg:w-full mb-10 flex flex-col justify-center items-center">
+  <hr class="w-60 lg:w-96 h-px lg:my-6 bg-gray-400 border-0 dark:bg-gray-700" />
   <RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
