@@ -51,34 +51,59 @@
     }
 </script>
 
-<div class="flex font-semibold text-xl justify-center">Finishing Times</div>
-<div class="grid grid-cols-2 mb-2 ml-3 pt-3">
-    <div class="text-lg font-medium w-48">Race Distance</div>
-    <div class="text-lg font-medium w-48">Time</div>
-    <div class="">Marathon:</div>
-    <div class="">
-        {calculateRaceTime(
-            paceMinutes,
-            paceSeconds,
-            "marathon",
-            isMinutesPerMile,
-        )}
+<div class="bg-white mt-1 p-4 border rounded-md shadow-amber-500 shadow">
+    <div class="flex font-semibold text-xl justify-center">Finishing Times</div>
+    <div class="flex justify-center items-center">
+        <div class="text-lg font-medium w-32">Race Distance</div>
+        <div class="text-lg font-medium w-32 flex justify-center items-center">
+            Time
+        </div>
     </div>
-    <div class="">Half-Marathon:</div>
-    <div class="">
-        {calculateRaceTime(
-            paceMinutes,
-            paceSeconds,
-            "half-marathon",
-            isMinutesPerMile,
-        )}
+    <div class="flex justify-center items-center">
+        <div class="w-32">Marathon:</div>
+        <div class="w-32 flex justify-center items-center">
+            {calculateRaceTime(
+                paceMinutes,
+                paceSeconds,
+                "marathon",
+                isMinutesPerMile,
+            )}
+        </div>
     </div>
-    <div class="">10km:</div>
-    <div class="">
-        {calculateRaceTime(paceMinutes, paceSeconds, "10k", isMinutesPerMile)}
+
+    <div class="flex">
+        <div class="w-32">Half-Marathon:</div>
+        <div class="w-32 flex justify-center items-center">
+            {calculateRaceTime(
+                paceMinutes,
+                paceSeconds,
+                "half-marathon",
+                isMinutesPerMile,
+            )}
+        </div>
     </div>
-    <div class="">5km:</div>
-    <div class="">
-        {calculateRaceTime(paceMinutes, paceSeconds, "5k", isMinutesPerMile)}
+
+    <div class="flex">
+        <div class="w-32">10km:</div>
+        <div class="w-32 flex justify-center items-center">
+            {calculateRaceTime(
+                paceMinutes,
+                paceSeconds,
+                "10k",
+                isMinutesPerMile,
+            )}
+        </div>
+    </div>
+
+    <div class="flex">
+        <div class="w-32">5km:</div>
+        <div class="w-32 flex justify-center items-center">
+            {calculateRaceTime(
+                paceMinutes,
+                paceSeconds,
+                "5k",
+                isMinutesPerMile,
+            )}
+        </div>
     </div>
 </div>

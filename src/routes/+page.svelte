@@ -22,9 +22,9 @@
   <div class="text-sm lg:text-base">
     Convert the pace between minutes per Mile and minutes per KM.
   </div>
-  <hr
-    class="w-60 lg:w-96 h-px mt-4 mb-6 lg:my-6 bg-gray-400 border-0 dark:bg-gray-700"
-  />
+</div>
+<div class="flex justify-center items-center w-full h-px mt-4 mb-6 lg:my-6">
+  <hr class="w-60 lg:w-1/3 border-slate-400/50 border-1 dark:border-white" />
 </div>
 
 <div class="flex lg:justify-center">
@@ -70,50 +70,21 @@
   </div>
 </div>
 
-<div class="flex my-4 text-lg lg:text-xl">
+<div class="flex mt-4 text-lg lg:text-xl items-center justify-center">
   <PaceConvertText {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
-<div class="lg:w-full mb-10 flex flex-col justify-center items-center">
-  <hr class="w-60 lg:w-96 h-px lg:my-6 bg-gray-400 border-0 dark:bg-gray-700" />
+<div class="lg:w-full mb-7 flex flex-col justify-center items-center">
+  <hr
+    class="w-60 lg:w-1/3 h-px my-4 lg:my-6 border-slate-400/50 border-1 dark:border-white"
+  />
   <RaceTime {paceMinutes} {paceSeconds} {isMinutesPerMile} />
 </div>
 
-<!-- <RedditPosts {subreddits} {postsPerSubreddit} {cacheDuration} /> -->
+<div class="flex justify-center items-center w-full h-px mt-4 mb-6 lg:my-6">
+  <hr
+    class="w-60 lg:w-1/3 h-px my-4 lg:my-6 border-slate-400/50 border-1 dark:border-white"
+  />
+</div>
 
 <RedditPosts />
-
-<!-- <div class="p-4">
-  {#if error}
-    <p>Error: {error}</p>
-  {:else if !redditData}
-    <p>Loading...</p>
-  {:else}
-    <p class="font-bold text-lg">Top Posts on Reddit</p>
-    <div class="border-3 rounded-md">
-      <ul>
-        {#each redditData.data.children as post}
-          <div
-            class="hover:bg-accent border-2 rounded-md shadow-sm m-1 p-1 bg-gray-300"
-            style="position:relative"
-          >
-            <li>
-              <a
-                href={"https://www.reddit.com" + post.data.permalink}
-                target="_blank"
-                class="font-medium"
-                ><span class="link-spanner"></span>
-                {post.data.title}
-              </a>
-              <p>
-                Score: {post.data.score} | Comments: {post.data.num_comments}
-              </p>
-              <p>Subreddit: r/{post.data.subreddit}</p>
-              <p>Pic: r/{post.data.thumbnail}</p>
-            </li>
-          </div>
-        {/each}
-      </ul>
-    </div>
-  {/if}
-</div> -->

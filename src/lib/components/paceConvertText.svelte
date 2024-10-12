@@ -34,34 +34,34 @@
     }
 </script>
 
-<div class="flex-auto w-32 text-right">
+<div class="w-32 text-right">
     {#if isMinutesPerMile}
-        <p>
+        <p class="ml-auto rounded p-1">
             {paceMinutes.toString().padStart(2, "0")}:{paceSeconds
                 .toString()
                 .padStart(2, "0")}/Mile
         </p>
     {:else}
-        <p class="font-bold">
-            {convertPace(paceMinutes, paceSeconds, isMinutesPerMile)}/Mile
+        <p class="ml-auto rounded p-1">
+            {paceMinutes.toString().padStart(2, "0")}:{paceSeconds
+                .toString()
+                .padStart(2, "0")}/KM &nbsp;
         </p>
     {/if}
 </div>
 
-<div class="text-center w-10 text-base">
+<div class="text-center w-12 text-base rounded p-1">
     <p>=</p>
 </div>
 
-<div class="flex-auto w-32 text-left">
+<div class="w-32 text-left">
     {#if isMinutesPerMile}
-        <p class="font-bold">
-            {convertPace(paceMinutes, paceSeconds, isMinutesPerMile)}/KM
+        <p class="font-bold bg-gray-300 w-fit rounded p-1">
+            {convertPace(paceMinutes, paceSeconds, isMinutesPerMile)}/KM &nbsp;
         </p>
     {:else}
-        <p>
-            {paceMinutes.toString().padStart(2, "0")}:{paceSeconds
-                .toString()
-                .padStart(2, "0")}/KM
+        <p class="font-bold bg-gray-300 w-fit mr-auto rounded p-1">
+            {convertPace(paceMinutes, paceSeconds, isMinutesPerMile)}/Mile
         </p>
     {/if}
 </div>

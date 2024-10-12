@@ -128,7 +128,7 @@ export class MultiRedditFetcher {
     private fetchers: Map<string, RedditDataFetcher>;
     private rateLimiter: RateLimiter;
 
-    constructor(subreddits: string[], limit: number, cacheDurationMs: number = 5 * 60 * 1000, time: string = 'week') {
+    constructor(subreddits: string[], limit: number, cacheDurationMs: number = 15 * 60 * 1000, time: string = 'week') {
         this.fetchers = new Map(
             subreddits.map(subreddit => [subreddit, new RedditDataFetcher(subreddit, limit, cacheDurationMs, time)])
         );
