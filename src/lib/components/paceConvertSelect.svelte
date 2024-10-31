@@ -8,10 +8,6 @@
     let { paceMinutes, paceSeconds, toggleMilesAndKM }: convertPropsSelect =
         $props();
 
-    // let paceMinutes: number = $state(4);
-    // let paceSeconds: number = $state(36);
-    // let toggleMilesAndKM = $state(true);
-
     function toggleFunction() {
         toggleMilesAndKM = !toggleMilesAndKM;
     }

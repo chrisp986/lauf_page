@@ -52,7 +52,9 @@
 </script>
 
 <div class="bg-white mt-1 p-4 border rounded-md shadow-amber-500 shadow">
-    <div class="flex font-semibold text-xl justify-center">Finishing Times</div>
+    <div class="flex font-semibold text-xl justify-center mb-2">
+        Finishing Times
+    </div>
     <div class="flex justify-center items-center">
         <div class="text-lg font-medium w-32">Race Distance</div>
         <div class="text-lg font-medium w-32 flex justify-center items-center">
